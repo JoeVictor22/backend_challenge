@@ -3,6 +3,7 @@ import re
 from pydantic import BaseModel, validator, constr
 from app import Usuario, Pessoa
 from werkzeug.security import generate_password_hash
+from flask_jwt_extended import get_jwt_identity
 
 class UsuarioAddSchema(BaseModel):
 
@@ -15,6 +16,13 @@ class UsuarioAddSchema(BaseModel):
     # todo, validate cpf and pis duplicate
     @validator('email')
     def email_valid(cls, v):
+
+        # todo validate user
+        current_user = get_jwt_identity()
+        usuario_logado = Usuario.query.get(current_user)
+        print(usuario_logado.email)
+
+
         email = v.lower()
         if re.match('^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$', email) is None:
             raise ValueError('O email informado é invalido.')
