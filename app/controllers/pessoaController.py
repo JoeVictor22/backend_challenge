@@ -28,9 +28,9 @@ def pessoaAll():
         data = {}
         data["id"] = pessoa.id
         data["nome"] = pessoa.nome
-        data["pis"] = pessoa.pis
-        data["cpf"] = pessoa.cpf
-        data["cep"] = pessoa.cep
+        data["pis"] = fieldsFormatter.PisFormatter().format(pessoa.pis)
+        data["cpf"] = fieldsFormatter.CpfFormatter().format(pessoa.cpf)
+        data["cep"] = fieldsFormatter.CepFormatter().format(pessoa.cep)
         data["rua"] = pessoa.rua
         data["numero"] = pessoa.numero
         data["complemento"] = pessoa.complemento
@@ -59,9 +59,9 @@ def pessoaView(pessoa_id):
     data = {"error": False}
     data["id"] = pessoa.id
     data["nome"] = pessoa.nome
-    data["pis"] = pessoa.pis
-    data["cpf"] = pessoa.cpf
-    data["cep"] = pessoa.cep
+    data["pis"] = fieldsFormatter.PisFormatter().format(pessoa.pis)
+    data["cpf"] = fieldsFormatter.CpfFormatter().format(pessoa.cpf)
+    data["cep"] = fieldsFormatter.CepFormatter().format(pessoa.cep)
     data["rua"] = pessoa.rua
     data["numero"] = pessoa.numero
     data["complemento"] = pessoa.complemento
@@ -82,9 +82,9 @@ def pessoaAdd():
 
     pessoa = Pessoa(
         nome=data.get("nome"),
-        pis=data.get("pis"),
-        cpf=data.get("cpf"),
-        cep=data.get("cep"),
+        pis=fieldsFormatter.PisFormatter().clean(data.get("pis")),
+        cpf=fieldsFormatter.CpfFormatter().clean(data.get("cpf")),
+        cep=fieldsFormatter.CepFormatter().clean(data.get("cep")),
         rua=data.get("rua"),
         numero=data.get("numero"),
         complemento=data.get("complemento"),
@@ -126,9 +126,9 @@ def pessoaEdit(pessoa_id):
     data = request.get_json()
 
     pessoa.nome = data.get("nome")
-    pessoa.pis = data.get("pis")
-    pessoa.cpf = data.get("cpf")
-    pessoa.cep = data.get("cep")
+    pessoa.pis = fieldsFormatter.PisFormatter().clean(data.get("pis")),
+    pessoa.cpf = fieldsFormatter.CpfFormatter().clean(data.get("cpf")),
+    pessoa.cep = fieldsFormatter.CepFormatter().clean(data.get("cep"))
     pessoa.rua = data.get("rua")
     pessoa.numero = data.get("numero")
     pessoa.complemento = data.get("complemento")

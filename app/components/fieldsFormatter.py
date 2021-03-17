@@ -30,7 +30,6 @@ class CepFormatter:
 
         return "%s-%s" % (cep[0:5], cep[5:8])
 
-
 class PhoneFormatter:
 
     def clean(self, phone):
@@ -49,5 +48,22 @@ class PhoneFormatter:
             return ""
 
         return "(%s) %s-%s" % (phone[0:2], phone[2:6], phone[6:11])
+
+
+class PisFormatter:
+
+    def clean(self, pis):
+
+        if not pis.isdigit():
+            pis = pis.replace("-", "")
+            pis = pis.replace(".", "")
+        return pis
+
+    def format(self, pis):
+
+        if pis == "":
+            return ""
+
+        return "%s.%s.%s-%s" % (pis[0:3], pis[3:8], pis[8:10], pis[10:11])
 
 
