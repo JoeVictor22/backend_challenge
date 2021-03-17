@@ -40,7 +40,7 @@ def resource(resource_name):
                     401,
                 )
 
-            if not data.allow:
+            if not data.permitir:
                 return (
                     jsonify(
                         {

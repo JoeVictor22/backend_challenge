@@ -9,6 +9,10 @@ from app import UsuarioValidator
 from app import fieldsFormatter
 
 
+from pprint import pprint
+from flask_pydantic import validate
+from app import UsuarioSchema
+
 @app.route("/usuario/all", methods=["GET"])
 @jwt_required
 @resource("usuario-all")
@@ -66,45 +70,18 @@ def usuarioView(usuario_id):
 @app.route("/usuario/add", methods=["POST"])
 @jwt_required
 @resource("usuario-add")
+@validate(body=UsuarioSchema)
 def usuarioAdd():
+
     data = request.get_json()
-    validator = UsuarioValidator(data)
-    validator.addPasswordField()
 
-    errors = validator.validate()
+    hashed_pass = generate_password_hash(data.get('senha'), method="sha256")
 
-    if errors["has"]:
-        return (
-            jsonify(
-                {
-                    "message": Messages.FORM_VALIDATION_ERROR,
-                    "error": errors["has"],
-                    "errors": errors,
-                }
-            ),
-            200,
-        )
-
-    errors = validator.validateUsername()
-
-    if errors["has"]:
-        return (
-            jsonify(
-                {
-                    "message": Messages.FORM_VALIDATION_ERROR,
-                    "error": errors["has"],
-                    "errors": errors,
-                }
-            ),
-            200,
-        )
-
-    hashed_pass = generate_password_hash(data["senha"], method="sha256")
     usuario = Usuario(
-        email=data["email"],
+        email=data.get("email"),
         senha=hashed_pass,
-        pessoa_id=data["pessoa_id"],
-        cargo_id=data["cargo_id"],
+        pessoa_id=data.get('pessoa_id'),
+        cargo_id=data.get("cargo_id"),
     )
 
     db.session.add(usuario)

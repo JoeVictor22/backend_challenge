@@ -33,3 +33,4 @@ SQLAlchemy==1.2.15
 tzlocal==2.1
 urllib3==1.26.3
 Werkzeug==0.14.1
+flask_pydantic
