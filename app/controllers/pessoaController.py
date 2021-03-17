@@ -27,6 +27,15 @@ def pessoaAll():
     for pessoa in pessoas:
         data = {}
         data["id"] = pessoa.id
+        data["nome"] = pessoa.nome
+        data["pis"] = pessoa.pis
+        data["cpf"] = pessoa.cpf
+        data["cep"] = pessoa.cep
+        data["rua"] = pessoa.rua
+        data["numero"] = pessoa.numero
+        data["complemento"] = pessoa.complemento
+        data["cidade_id"] = pessoa.cidade_id
+
 
         output["itens"].append(data)
 
@@ -49,7 +58,14 @@ def pessoaView(pessoa_id):
 
     data = {"error": False}
     data["id"] = pessoa.id
-
+    data["nome"] = pessoa.nome
+    data["pis"] = pessoa.pis
+    data["cpf"] = pessoa.cpf
+    data["cep"] = pessoa.cep
+    data["rua"] = pessoa.rua
+    data["numero"] = pessoa.numero
+    data["complemento"] = pessoa.complemento
+    data["cidade_id"] = pessoa.cidade_id
 
     return jsonify(data)
 
@@ -65,9 +81,14 @@ def pessoaAdd():
 
 
     pessoa = Pessoa(
-        email=data.get("email"),
-        pessoa_id=data.get('pessoa_id'),
-        cargo_id=data.get("cargo_id"),
+        nome=data.get("nome"),
+        pis=data.get("pis"),
+        cpf=data.get("cpf"),
+        cep=data.get("cep"),
+        rua=data.get("rua"),
+        numero=data.get("numero"),
+        complemento=data.get("complemento"),
+        cidade_id=data.get("cidade_id"),
     )
 
     db.session.add(pessoa)
@@ -93,6 +114,7 @@ def pessoaAdd():
 @app.route("/pessoa/edit/<pessoa_id>", methods=["PUT"])
 @jwt_required
 @resource("pessoa-edit")
+@validate(body=PessoaAddSchema)
 def pessoaEdit(pessoa_id):
     pessoa = Pessoa.query.get(pessoa_id)
 
@@ -103,9 +125,14 @@ def pessoaEdit(pessoa_id):
 
     data = request.get_json()
 
-    pessoa.email = data.get("email")
-    pessoa.pessoa_id = data.get("pessoa_id")
-    pessoa.cargo_id = data.get("cargo_id")
+    pessoa.nome = data.get("nome")
+    pessoa.pis = data.get("pis")
+    pessoa.cpf = data.get("cpf")
+    pessoa.cep = data.get("cep")
+    pessoa.rua = data.get("rua")
+    pessoa.numero = data.get("numero")
+    pessoa.complemento = data.get("complemento")
+    pessoa.cidade_id = data.get("cidade_id")
 
     try:
         db.session.commit()
@@ -135,7 +162,6 @@ def pessoaDelete(pessoa_id):
         return jsonify(
             {"message": Messages.REGISTER_NOT_FOUND.format(pessoa_id), "error": True}
         )
-
 
     db.session.delete(pessoa)
 
