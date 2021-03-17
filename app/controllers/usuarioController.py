@@ -11,7 +11,7 @@ from app import fieldsFormatter
 
 from pprint import pprint
 from flask_pydantic import validate
-from app import UsuarioSchema
+from app import UsuarioAddSchema, UsuarioEditSchema
 
 @app.route("/usuario/all", methods=["GET"])
 @jwt_required
@@ -70,7 +70,7 @@ def usuarioView(usuario_id):
 @app.route("/usuario/add", methods=["POST"])
 @jwt_required
 @resource("usuario-add")
-@validate(body=UsuarioSchema)
+@validate(body=UsuarioAddSchema)
 def usuarioAdd():
 
     data = request.get_json()
@@ -107,6 +107,7 @@ def usuarioAdd():
 @app.route("/usuario/edit/<usuario_id>", methods=["PUT"])
 @jwt_required
 @resource("usuario-edit")
+@validate(body=UsuarioEditSchema)
 def usuarioEdit(usuario_id):
     usuario = Usuario.query.get(usuario_id)
 
@@ -116,24 +117,10 @@ def usuarioEdit(usuario_id):
         )
 
     data = request.get_json()
-    validator = UsuarioValidator(data)
-    errors = validator.validate()
 
-    if errors["has"]:
-        return (
-            jsonify(
-                {
-                    "message": Messages.FORM_VALIDATION_ERROR,
-                    "error": errors["has"],
-                    "errors": errors,
-                }
-            ),
-            200,
-        )
-
-    usuario.email = data["email"]
-    usuario.pessoa_id = data["pessoa_id"]
-    usuario.cargo_id = data["cargo_id"]
+    usuario.email = data.get("email")
+    usuario.pessoa_id = data.get("pessoa_id")
+    usuario.cargo_id = data.get("cargo_id")
 
     try:
         db.session.commit()

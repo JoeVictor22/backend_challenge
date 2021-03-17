@@ -35,7 +35,7 @@ from app.validators.modelValidator import ModelValidator
 from app.validators.authValidator import AuthValidator
 from app.validators.usuarioValidator import UsuarioValidator
 
-from app.model_schema.usuarioSchema import UsuarioSchema
+from app.model_schema.usuarioSchema import UsuarioAddSchema, UsuarioEditSchema
 
 
 from app.controllers import usuarioController
