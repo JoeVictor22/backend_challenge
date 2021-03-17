@@ -76,9 +76,10 @@ def usuarioAdd():
     data = request.get_json()
 
     hashed_pass = generate_password_hash(data.get('senha'), method="sha256")
+    email = data.get("email").lower()
 
     usuario = Usuario(
-        email=data.get("email"),
+        email=email,
         senha=hashed_pass,
         pessoa_id=data.get('pessoa_id'),
         cargo_id=data.get("cargo_id"),
@@ -118,7 +119,7 @@ def usuarioEdit(usuario_id):
 
     data = request.get_json()
 
-    usuario.email = data.get("email")
+    usuario.email = data.get("email").lower()
     usuario.pessoa_id = data.get("pessoa_id")
     usuario.cargo_id = data.get("cargo_id")
 

@@ -21,12 +21,14 @@ from werkzeug.security import check_password_hash
 def login():
     data = request.get_json()
 
-    cpf_pis = fieldsFormatter.CpfFormatter().clean(data.get("email"))
+    email = data.get("email").lower()
+
+    cpf_pis = fieldsFormatter.CpfFormatter().clean(email)
 
 
     user = db.session.query(Usuario).join(Pessoa, Pessoa.id == Usuario.pessoa_id, isouter=True).filter(
         or_(
-            Usuario.email == data.get("email"),
+            Usuario.email == email,
             Pessoa.cpf == cpf_pis,
             Pessoa.pis == cpf_pis
         )
@@ -35,17 +37,17 @@ def login():
 
     error = {
         "form": [],
-        "has": False
+        "error": False
     }
 
     if not user:
         error["form"].append({"message": Messages.AUTH_USER_NOT_FOUND})
-        error["has"] = True
+        error["error"] = True
     elif not check_password_hash(user.senha, str(data.get("senha"))):
         error["form"].append({"message": Messages.AUTH_USER_PASS_ERROR})
-        error["has"] = True
+        error["error"] = True
 
-    if error["has"]:
+    if error["error"]:
         return jsonify(error)
 
     return (
