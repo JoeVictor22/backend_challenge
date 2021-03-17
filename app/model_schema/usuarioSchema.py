@@ -53,8 +53,8 @@ class UsuarioEditSchema(BaseModel):
 
     # todo, validate cpf and pis duplicate
     @validator('email')
-    def email_valid(cls, v):
-        email = v.lower()
+    def email_valid(cls, email):
+        email = email.lower()
         if re.match('^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$', email) is None:
             raise ValueError('O email informado é invalido.')
         if Usuario.query.filter_by(email=email).first():

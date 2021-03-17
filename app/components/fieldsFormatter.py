@@ -1,6 +1,6 @@
 class CpfFormatter:
     def clean(self, cpf):
-
+        cpf = str(cpf)
         if not cpf.isdigit():
             cpf = cpf.replace(".", "")
             cpf = cpf.replace("-", "")
@@ -53,7 +53,7 @@ class PhoneFormatter:
 class PisFormatter:
 
     def clean(self, pis):
-
+        pis = str(pis)
         if not pis.isdigit():
             pis = pis.replace("-", "")
             pis = pis.replace(".", "")

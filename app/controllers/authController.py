@@ -9,39 +9,44 @@ from flask_jwt_extended import (
 )
 from sqlalchemy import or_
 from app import Usuario, fieldsFormatter, Pessoa
-from app import AuthValidator
+from app import AuthValidator, AuthLoginSchema
+from flask_pydantic import validate
+from werkzeug.security import check_password_hash
 
 # --------------------------------------------------------------------------------------------------#
 
 
 @app.route("/auth", methods=["POST"])
+@validate(body=AuthLoginSchema)
 def login():
     data = request.get_json()
 
-    validator = AuthValidator(data)
-    errors = validator.validate()
+    cpf_pis = fieldsFormatter.CpfFormatter().clean(data.get("email"))
 
-    if errors["has"]:
-        return (
-            jsonify(
-                {
-                    "message": Messages.FORM_VALIDATION_ERROR,
-                    "error": errors["has"],
-                    "errors": errors,
-                }
-            ),
-            200,
-        )
-
-    cpf_pis = fieldsFormatter.CpfFormatter().clean(data["email"])
 
     user = db.session.query(Usuario).join(Pessoa, Pessoa.id == Usuario.pessoa_id, isouter=True).filter(
         or_(
-            Usuario.email == data["email"],
+            Usuario.email == data.get("email"),
             Pessoa.cpf == cpf_pis,
             Pessoa.pis == cpf_pis
         )
     ).first()
+
+
+    error = {
+        "form": [],
+        "has": False
+    }
+
+    if not user:
+        error["form"].append({"message": Messages.AUTH_USER_NOT_FOUND})
+        error["has"] = True
+    elif not check_password_hash(user.senha, str(data.get("senha"))):
+        error["form"].append({"message": Messages.AUTH_USER_PASS_ERROR})
+        error["has"] = True
+
+    if error["has"]:
+        return jsonify(error)
 
     return (
         jsonify(
