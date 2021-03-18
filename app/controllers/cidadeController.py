@@ -13,8 +13,8 @@ from flask_pydantic import validate
 from app import UsuarioAddSchema, UsuarioEditSchema
 
 @app.route("/cidade/all", methods=["GET"])
-@jwt_required
-@resource("cidade-all")
+#@jwt_required
+#@resource("cidade-all")
 def cidadeAll():
 
     page = request.args.get("page", 1, type=int)
@@ -43,8 +43,8 @@ def cidadeAll():
 
 
 @app.route("/cidade/view/<cidade_id>", methods=["GET"])
-@jwt_required
-@resource("cidade-view")
+#@jwt_required
+#@resource("cidade-view")
 def cidadeView(cidade_id):
     cidade = Cidade.query.get(cidade_id)
 

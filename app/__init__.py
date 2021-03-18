@@ -40,10 +40,12 @@ from app.validators.usuarioValidator import UsuarioValidator
 from app.model_schema.usuarioSchema import UsuarioAddSchema, UsuarioEditSchema
 from app.model_schema.pessoaSchema import PessoaAddSchema
 from app.model_schema.authSchema import AuthLoginSchema
+from app.model_schema.cadastroSchema import CadastroAddSchema
 
 from app.controllers import usuarioController
 from app.controllers import authController
 from app.controllers import pessoaController
 from app.controllers import cargoController
 from app.controllers import cidadeController
+from app.controllers import cadastroController
 
