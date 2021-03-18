@@ -10,7 +10,7 @@ from app import fieldsFormatter
 from pprint import pprint
 from flask_pydantic import validate
 from app import CadastroAddSchema
-
+from traceback import print_exc
 
 # --------------------------------------------------------------------------------------------------#
 
@@ -55,6 +55,7 @@ def cadastroAdd():
             }
         )
     except exc.IntegrityError:
+        print_exc()
         db.session.rollback()
         return jsonify(
             {"message": Messages.REGISTER_CREATE_INTEGRITY_ERROR, "error": True}
