@@ -1,0 +1,13 @@
+version: '3.3'
+
+services:
+  app:
+    ports:
+      - "5000:8080"
+    env_file:
+      - .homolog.env
+  postgres:
+    ports:
+      - "5433:5432"
+    env_file:
+      - .homolog.env

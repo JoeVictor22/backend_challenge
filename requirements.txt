@@ -17,7 +17,6 @@ Jinja2==2.10
 Mako==1.0.7
 MarkupSafe==1.1.0
 pexpect==4.8.0
-psycopg2==2.8.6
 psycopg2-binary==2.8.6
 ptyprocess==0.7.0
 PyJWT==1.4.2

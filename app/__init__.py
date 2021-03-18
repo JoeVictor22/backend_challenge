@@ -1,6 +1,6 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-from flask_script import Manager
+from flask_script import Server, Manager
 from flask_migrate import Migrate, MigrateCommand
 from flask_jwt_extended import JWTManager
 from flask_cors import CORS
@@ -16,6 +16,8 @@ db  = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
 manager = Manager(app)
+server = Server(host="0.0.0.0", port=5000)
+manager.add_command("runserver", server)
 manager.add_command('db', MigrateCommand)
 
 import Messages
