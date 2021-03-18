@@ -43,3 +43,5 @@ from app.controllers import usuarioController
 from app.controllers import authController
 from app.controllers import pessoaController
 from app.controllers import cargoController
+from app.controllers import cidadeController
+

@@ -25,6 +25,7 @@ insert into usuario (email, senha, cargo_id, pessoa_id) values ('joel.victor.cas
 insert into controller (id, nome) values (1, 'usuario');
 insert into controller (id, nome) values (2, 'pessoa');
 insert into controller (id, nome) values (3, 'cargo');
+insert into controller (id, nome) values (4, 'cidade');
 
 ---
 --  Regras
@@ -49,6 +50,12 @@ INSERT INTO public.regra(acao, cargo_id, controller_id, permitir) VALUES ('view'
 INSERT INTO public.regra(acao, cargo_id, controller_id, permitir) VALUES ('add',    1, 3, True);    -- /cargo/add
 INSERT INTO public.regra(acao, cargo_id, controller_id, permitir) VALUES ('edit',   1, 3, True);    -- /cargo/edit
 INSERT INTO public.regra(acao, cargo_id, controller_id, permitir) VALUES ('delete', 1, 3, True);    -- /cargo/delete
+
+INSERT INTO public.regra(acao, cargo_id, controller_id, permitir) VALUES ('all',    1, 4, True);    -- /cidade/all
+INSERT INTO public.regra(acao, cargo_id, controller_id, permitir) VALUES ('view',   1, 4, True);    -- /cidade/view
+INSERT INTO public.regra(acao, cargo_id, controller_id, permitir) VALUES ('add',    1, 4, True);    -- /cidade/add
+INSERT INTO public.regra(acao, cargo_id, controller_id, permitir) VALUES ('edit',   1, 4, True);    -- /cidade/edit
+INSERT INTO public.regra(acao, cargo_id, controller_id, permitir) VALUES ('delete', 1, 4, True);    -- /cidade/delete
 --
 --- cliente
 INSERT INTO public.regra(acao, cargo_id, controller_id, permitir) VALUES ('all',    2, 1, False);   -- /usuario/all
@@ -69,3 +76,8 @@ INSERT INTO public.regra(acao, cargo_id, controller_id, permitir) VALUES ('add',
 INSERT INTO public.regra(acao, cargo_id, controller_id, permitir) VALUES ('edit',   2, 3, False);    -- /cargo/edit
 INSERT INTO public.regra(acao, cargo_id, controller_id, permitir) VALUES ('delete', 2, 3, False);    -- /cargo/delete
 
+INSERT INTO public.regra(acao, cargo_id, controller_id, permitir) VALUES ('all',    2, 4, True);    -- /cidade/all
+INSERT INTO public.regra(acao, cargo_id, controller_id, permitir) VALUES ('view',   2, 4, True);    -- /cidade/view
+INSERT INTO public.regra(acao, cargo_id, controller_id, permitir) VALUES ('add',    2, 4, False);    -- /cidade/add
+INSERT INTO public.regra(acao, cargo_id, controller_id, permitir) VALUES ('edit',   2, 4, False);    -- /cidade/edit
+INSERT INTO public.regra(acao, cargo_id, controller_id, permitir) VALUES ('delete', 2, 4, False);    -- /cidade/delete
