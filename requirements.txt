@@ -34,3 +34,4 @@ urllib3==1.26.3
 Werkzeug==0.14.1
 flask_pydantic
 validate-docbr
+python-jose

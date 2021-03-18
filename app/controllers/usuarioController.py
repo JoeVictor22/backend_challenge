@@ -3,10 +3,11 @@ from flask import request, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from sqlalchemy import exc
 from werkzeug.security import generate_password_hash
-from . import resource, paginate
+from . import resource, paginate, requires_auth
 from app import Usuario
 from app import UsuarioValidator
 from app import fieldsFormatter
+from flask_cors import cross_origin
 
 
 from pprint import pprint
@@ -14,8 +15,11 @@ from flask_pydantic import validate
 from app import UsuarioAddSchema, UsuarioEditSchema
 
 @app.route("/usuario/all", methods=["GET"])
-@jwt_required
-@resource("usuario-all")
+@cross_origin(headers=["Content-Type", "Authorization"])
+
+#@jwt_required
+#@resource("usuario-all")
+@requires_auth
 def usuarioAll():
 
     page = request.args.get("page", 1, type=int)
