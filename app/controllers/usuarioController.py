@@ -73,10 +73,16 @@ def usuarioView(usuario_id):
 @validate(body=UsuarioAddSchema)
 def usuarioAdd():
 
+
     data = request.get_json()
+    email = data.get("email").lower()
+
+    if Usuario.query.filter_by(email=email).first():
+        return jsonify(
+            {"message": "O email informado já esta cadastrado", "error": True}
+        )
 
     hashed_pass = generate_password_hash(data.get('senha'), method="sha256")
-    email = data.get("email").lower()
 
     usuario = Usuario(
         email=email,
@@ -118,8 +124,14 @@ def usuarioEdit(usuario_id):
         )
 
     data = request.get_json()
+    email = data.get("email").lower()
 
-    usuario.email = data.get("email").lower()
+    if Usuario.query.filter(Usuario.email == email, Usuario.id != usuario_id).first():
+        return jsonify(
+            {"message": "O email informado já esta cadastrado", "error": True}
+        )
+
+    usuario.email = email
     usuario.perfil_id = data.get("perfil_id")
     usuario.cargo_id = data.get("cargo_id")
 
@@ -154,17 +166,11 @@ def usuarioDelete(usuario_id):
 
     current_user = get_jwt_identity()
     usuario_logado = Usuario.query.get(current_user)
-    
-    # VALIDATE DELETE
-    if usuario.id == usuario_logado.id:
+
+    if usuario_logado.cargo_id != 1 and usuario_logado.id != usuario.id:
         return jsonify(
             {"message": Messages.USER_INVALID_DELETE, "error": True})
-    if usuario_logado.cargo_id != 1:
-        return jsonify(
-            {"message": Messages.USER_INVALID_DELETE, "error": True})
-    if usuario.id == 1:
-        return jsonify(
-            {"message": Messages.USER_INVALID_DELETE, "error": True})
+
 
     db.session.delete(usuario)
 

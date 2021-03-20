@@ -12,6 +12,8 @@ class Usuario(db.Model):
     perfil_id = db.Column(db.BigInteger, db.ForeignKey("perfil.id"), nullable=True)
     cargo_id = db.Column(db.Integer, db.ForeignKey("cargo.id"), nullable=False)
 
+    perfil = db.relationship('Perfil', backref='usuario', lazy=True, cascade="all, delete-orphan", single_parent=True)
+
     # --------------------------------------------------------------------------------------------------#
 
     def __init__(self, email, senha, perfil_id, cargo_id):

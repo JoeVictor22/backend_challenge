@@ -94,16 +94,25 @@ def refresh():
 def me():
     current_user = get_jwt_identity()
     user = Usuario.query.get(current_user)
+    if user is None:
+        return jsonify({"message": Messages.REGISTER_NOT_FOUND.format(current_user), "error": True})
+
     return (
         jsonify(
             {
+                "id": user.id,
                 "email": user.email,
                 "perfil_id": user.perfil_id,
                 "perfil":{
                     "id": user.perfil_id,
                     "nome": user.perfil.nome,
-                    "cpf": user.perfil.cpf,
-                    "pis": user.perfil.pis
+                    "cpf": fieldsFormatter.CpfFormatter().format(user.perfil.cpf),
+                    "pis": fieldsFormatter.PisFormatter().format(user.perfil.pis),
+                    "cep": fieldsFormatter.CepFormatter().format(user.perfil.cep),
+                    "rua": user.perfil.rua,
+                    "numero": user.perfil.numero,
+                    "complemento": user.perfil.complemento,
+                    "cidade_id": user.perfil.cidade_id,
                 }if user.perfil_id is not None else None,
                 "cargo_id": user.cargo_id,
                 "cargo": {

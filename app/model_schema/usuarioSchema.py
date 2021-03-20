@@ -16,18 +16,9 @@ class UsuarioAddSchema(BaseModel):
     # todo, validate cpf and pis duplicate
     @validator('email')
     def email_valid(cls, v):
-
-        # todo validate user
-        current_user = get_jwt_identity()
-        usuario_logado = Usuario.query.get(current_user)
-        print(usuario_logado.email)
-
-
         email = v.lower()
         if re.match('^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$', email) is None:
             raise ValueError('O email informado é invalido.')
-        if Usuario.query.filter_by(email=email).first():
-            raise ValueError('O email informado já está cadastrado.')
         return email
 
 
@@ -57,8 +48,6 @@ class UsuarioEditSchema(BaseModel):
         email = email.lower()
         if re.match('^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$', email) is None:
             raise ValueError('O email informado é invalido.')
-        if Usuario.query.filter_by(email=email).first():
-            raise ValueError('O email informado já está cadastrado.')
         return email
 
 
