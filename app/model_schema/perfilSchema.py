@@ -4,7 +4,7 @@ from pydantic import BaseModel, validator, constr
 from app import Usuario
 from validate_docbr import CPF, PIS
 
-class PessoaAddSchema(BaseModel):
+class PerfilAddSchema(BaseModel):
     # mandatory field
     nome: constr(min_length=2, max_length=255)
     pis: constr(min_length=11, max_length=50)

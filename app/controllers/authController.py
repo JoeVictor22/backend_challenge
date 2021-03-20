@@ -8,7 +8,7 @@ from flask_jwt_extended import (
     get_jwt_identity,
 )
 from sqlalchemy import or_
-from app import Usuario, fieldsFormatter, Pessoa
+from app import Usuario, fieldsFormatter, Perfil
 from app import AuthValidator, AuthLoginSchema
 from flask_pydantic import validate
 from werkzeug.security import check_password_hash
@@ -26,11 +26,11 @@ def login():
     cpf_pis = fieldsFormatter.CpfFormatter().clean(email)
 
 
-    user = db.session.query(Usuario).join(Pessoa, Pessoa.id == Usuario.pessoa_id, isouter=True).filter(
+    user = db.session.query(Usuario).join(Perfil, Perfil.id == Usuario.perfil_id, isouter=True).filter(
         or_(
             Usuario.email == email,
-            Pessoa.cpf == cpf_pis,
-            Pessoa.pis == cpf_pis
+            Perfil.cpf == cpf_pis,
+            Perfil.pis == cpf_pis
         )
     ).first()
 
@@ -85,12 +85,12 @@ def me():
         jsonify(
             {
                 "email": user.email,
-                "pessoa_id": user.pessoa_id,
-                "pessoa":{
+                "perfil_id": user.perfil_id,
+                "perfil":{
                     "id": user.cargo_id,
-                    "nome": user.pessoa.nome,
-                    "cpf": user.pessoa.cpf,
-                    "pis": user.pessoa.pis
+                    "nome": user.perfil.nome,
+                    "cpf": user.perfil.cpf,
+                    "pis": user.perfil.pis
                 },
                 "cargo_id": user.cargo_id,
                 "cargo": {

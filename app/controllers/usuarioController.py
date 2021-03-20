@@ -33,7 +33,7 @@ def usuarioAll():
         data = {}
         data["id"] = usuario.id
         data["email"] = usuario.email
-        data["pessoa_id"] = usuario.pessoa_id
+        data["perfil_id"] = usuario.perfil_id
 
         data["cargo_id"] = usuario.cargo_id
 
@@ -59,7 +59,7 @@ def usuarioView(usuario_id):
     data = {"error": False}
     data["id"] = usuario.id
     data["email"] = usuario.email
-    data["pessoa_id"] = usuario.pessoa_id
+    data["perfil_id"] = usuario.perfil_id
 
     data["cargo_id"] = usuario.cargo_id
 
@@ -81,7 +81,7 @@ def usuarioAdd():
     usuario = Usuario(
         email=email,
         senha=hashed_pass,
-        pessoa_id=data.get('pessoa_id'),
+        perfil_id=data.get('perfil_id'),
         cargo_id=data.get("cargo_id"),
     )
 
@@ -120,7 +120,7 @@ def usuarioEdit(usuario_id):
     data = request.get_json()
 
     usuario.email = data.get("email").lower()
-    usuario.pessoa_id = data.get("pessoa_id")
+    usuario.perfil_id = data.get("perfil_id")
     usuario.cargo_id = data.get("cargo_id")
 
     try:

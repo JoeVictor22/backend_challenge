@@ -1,5 +1,5 @@
 from app import ModelValidator, Messages, fieldsFormatter
-from app import Usuario, Pessoa, db
+from app import Usuario, Perfil, db
 from sqlalchemy import or_
 from pprint import pprint
 from werkzeug.security import check_password_hash
@@ -25,11 +25,11 @@ class AuthValidator(ModelValidator):
 
             cpf_pis = fieldsFormatter.CpfFormatter().clean(self.formData["email"])
 
-            user = db.session.query(Usuario).join(Pessoa, Pessoa.id == Usuario.pessoa_id, isouter=True).filter(
+            user = db.session.query(Usuario).join(Perfil, Perfil.id == Usuario.perfil_id, isouter=True).filter(
                 or_(
                     Usuario.email == self.formData["email"],
-                    Pessoa.cpf == cpf_pis,
-                    Pessoa.pis == cpf_pis
+                    Perfil.cpf == cpf_pis,
+                    Perfil.pis == cpf_pis
                     )
             ).first()
 

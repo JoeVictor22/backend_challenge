@@ -1,7 +1,7 @@
 from typing import Optional
 import re
 from pydantic import BaseModel, validator, constr
-from app import Usuario, Pessoa, fieldsFormatter
+from app import Usuario, Perfil, fieldsFormatter
 
 from validate_docbr import CPF, PIS
 
@@ -35,7 +35,7 @@ class CadastroAddSchema(BaseModel):
     def cpf_valid(cls, cpf):
         if CPF().validate(cpf):
             cpf = fieldsFormatter.PisFormatter().clean(cpf)
-            if Pessoa.query.filter_by(cpf=cpf).first():
+            if Perfil.query.filter_by(cpf=cpf).first():
                 raise ValueError('O CPF informado já está cadastrado.')
             return cpf
         else:
@@ -46,7 +46,7 @@ class CadastroAddSchema(BaseModel):
     def pis_valid(cls, pis):
         if PIS().validate(pis):
             pis = fieldsFormatter.PisFormatter().clean(pis)
-            if Pessoa.query.filter_by(pis=pis).first():
+            if Perfil.query.filter_by(pis=pis).first():
                 raise ValueError('O PIS informado já está cadastrado.')
             return pis
         else:

@@ -1,7 +1,7 @@
 from typing import Optional
 import re
 from pydantic import BaseModel, validator, constr
-from app import Usuario, Pessoa
+from app import Usuario, Perfil
 from werkzeug.security import generate_password_hash
 from flask_jwt_extended import get_jwt_identity
 from app import fieldsFormatter, db, Messages

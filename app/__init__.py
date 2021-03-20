@@ -27,7 +27,7 @@ from app.models.usuarioTable import Usuario
 from app.models.controllerTable import Controller
 from app.models.regraTable import Regra
 from app.models.cargoTable import Cargo
-from app.models.pessoaTable import Pessoa
+from app.models.perfilTable import Perfil
 
 from app.models.cidadeTable import Cidade
 from app.models.estadoTable import Estado
@@ -38,13 +38,13 @@ from app.validators.authValidator import AuthValidator
 from app.validators.usuarioValidator import UsuarioValidator
 
 from app.model_schema.usuarioSchema import UsuarioAddSchema, UsuarioEditSchema
-from app.model_schema.pessoaSchema import PessoaAddSchema
+from app.model_schema.perfilSchema import PerfilAddSchema
 from app.model_schema.authSchema import AuthLoginSchema
 from app.model_schema.cadastroSchema import CadastroAddSchema
 
 from app.controllers import usuarioController
 from app.controllers import authController
-from app.controllers import pessoaController
+from app.controllers import perfilController
 from app.controllers import cargoController
 from app.controllers import cidadeController
 from app.controllers import cadastroController

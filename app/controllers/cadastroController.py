@@ -4,7 +4,7 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 from sqlalchemy import exc
 from werkzeug.security import generate_password_hash
 from . import resource, paginate
-from app import Usuario, Pessoa
+from app import Usuario, Perfil
 from app import fieldsFormatter
 
 from pprint import pprint
@@ -22,7 +22,7 @@ def cadastroAdd():
     hashed_pass = generate_password_hash(data.get('senha'), method="sha256")
     email = data.get("email").lower()
 
-    pessoa = Pessoa(
+    perfil = Perfil(
         nome=data.get("nome"),
         pis=fieldsFormatter.PisFormatter().clean(data.get("pis")),
         cpf=fieldsFormatter.CpfFormatter().clean(data.get("cpf")),
@@ -33,7 +33,7 @@ def cadastroAdd():
         cidade_id=data.get("cidade_id"),
     )
 
-    db.session.add(pessoa)
+    db.session.add(perfil)
 
     try:
         db.session.flush()
@@ -41,7 +41,7 @@ def cadastroAdd():
         usuario = Usuario(
             email=email,
             senha=hashed_pass,
-            pessoa_id=pessoa.id,
+            perfil_id=perfil.id,
             cargo_id=2,
         )
 

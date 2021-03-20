@@ -1,7 +1,7 @@
 from app import db
 
-class Pessoa(db.Model):
-    __tablename__ = "pessoa"
+class Perfil(db.Model):
+    __tablename__ = "perfil"
 
     id = db.Column(db.BigInteger, primary_key=True)
     nome = db.Column(db.String(255), nullable=False)
@@ -29,5 +29,5 @@ class Pessoa(db.Model):
     # --------------------------------------------------------------------------------------------------#
 
     def __repr__(self):
-        return "<Pessoa %r %r %r %r %r %r %r %r %r>" %(self.id, self.nome, self.pis, self.cpf, self.cep, self.rua,
+        return "<Perfil %r %r %r %r %r %r %r %r %r>" %(self.id, self.nome, self.pis, self.cpf, self.cep, self.rua,
                                                        self.numero, self.complemento, self.cidade_id)
