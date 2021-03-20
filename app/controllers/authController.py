@@ -56,6 +56,19 @@ def login():
                 "access_token": create_access_token(identity=user.id),
                 "refresh_token": create_refresh_token(identity=user.id),
                 "cargo_id": user.cargo_id,
+                "email": user.email,
+                "perfil_id": user.perfil_id,
+                "perfil": {
+                    "id": user.cargo_id,
+                    "nome": user.perfil.nome,
+                    "cpf": user.perfil.cpf ,
+                    "pis": user.perfil.pis
+                } if user.perfil_id is not None else None,
+                "cargo": {
+                    "id": user.cargo.id,
+                    "name": user.cargo.nome
+                },
+
             }
         ),
         200,

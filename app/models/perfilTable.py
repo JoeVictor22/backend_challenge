@@ -14,6 +14,8 @@ class Perfil(db.Model):
 
     cidade_id = db.Column(db.BigInteger, db.ForeignKey("cidade.id"), nullable=False)
 
+    usuario = db.relationship('Usuario', backref='perfil', lazy=True)
+
     # --------------------------------------------------------------------------------------------------#
 
     def __init__(self, nome, pis, cpf, cep, rua, numero, complemento, cidade_id):
