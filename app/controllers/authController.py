@@ -59,9 +59,9 @@ def login():
                 "email": user.email,
                 "perfil_id": user.perfil_id,
                 "perfil": {
-                    "id": user.cargo_id,
+                    "id": user.perfil_id,
                     "nome": user.perfil.nome,
-                    "cpf": user.perfil.cpf ,
+                    "cpf": user.perfil.cpf,
                     "pis": user.perfil.pis
                 } if user.perfil_id is not None else None,
                 "cargo": {
@@ -100,15 +100,15 @@ def me():
                 "email": user.email,
                 "perfil_id": user.perfil_id,
                 "perfil":{
-                    "id": user.cargo_id,
+                    "id": user.perfil_id,
                     "nome": user.perfil.nome,
                     "cpf": user.perfil.cpf,
                     "pis": user.perfil.pis
-                },
+                }if user.perfil_id is not None else None,
                 "cargo_id": user.cargo_id,
                 "cargo": {
                     "id": user.cargo.id,
-                    "name": user.cargo.name
+                    "name": user.cargo.nome
                 },
             }
         ),
