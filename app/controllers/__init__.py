@@ -14,6 +14,18 @@ def resource(resource_name):
         @wraps(f)
         def wrapped(*args, **kwargs):
             user = Usuario.query.get(get_jwt_identity())
+            if user is None:
+                return (
+                    jsonify(
+                        {
+                            "description": Messages.AUTH_USER_DENIED,
+                            "error": "Unauthorized Access",
+                            "status_code": 401,
+                        }
+                    ),
+                    401,
+                )
+
             user_role = user.cargo_id
             contr, act = resource_name.split("-")
 
