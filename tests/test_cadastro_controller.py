@@ -1,65 +1,66 @@
 import json
 
-from tests.scenarios import SCENARIO_ADMIN, SCENARIO_USER
+from tests.scenarios import SCENARIO_USER
 
 from pprint import pprint
 
-def test_get_usuarios(app, db, login):
-
+def test_get_perfis(app, db, admin_login):
     with app.app_context():
         client = app.test_client()
 
-        url = "/usuario/all"
-        response = client.get(url, headers=login)
+        url = "/perfil/all"
+        response = client.get(url, headers=admin_login)
         output = json.loads(response.get_data())
         assert not output["error"]
         assert response.status_code == 200
 
-def test_post_usuario(app, db, login):
-
+def test_post_perfil(app, db, admin_login):
     with app.app_context():
         client = app.test_client()
 
-        url = "/usuario/add"
-        response = client.post(url, data=json.dumps(SCENARIO_ADMIN), headers=login)
-        output = json.loads(response.get_data())
-        assert not output["error"]
-        assert not output["message"] == "Ocorreram erros no preenchimento do formulário."
-        assert response.status_code == 200
-
-def test_view_usuario(app, db, login):
-
-    with app.app_context():
-        client = app.test_client()
-
-        url = "/usuario/view/1"
-        response = client.get(url, headers=login)
+        url = "/usuario/cadastro"
+        response = client.post(url, data=json.dumps(SCENARIO_USER), headers=admin_login)
         output = json.loads(response.get_data())
         assert not output["error"]
         assert response.status_code == 200
 
-def test_delete_usuario(app, login):
+def test_view_perfil(app, db, admin_login):
     with app.app_context():
-
         client = app.test_client()
 
-        url = "/usuario/all?email=teste@gmail.com"
-        response = client.get(url, headers=login)
+        url = "/usuario/all?email=" + SCENARIO_USER["email"]
+        response = client.get(url, headers=admin_login)
         output = json.loads(response.get_data())
         assert response.status_code == 200
         assert not output["error"]
         assert output["itens"][0]
 
+        id = output["itens"][0]["perfil_id"]
 
-        id = output["itens"][0]["id"]
+        url = "/perfil/view/" + str(id)
+        response = client.get(url, headers=admin_login)
+        output = json.loads(response.get_data())
+        print(output)
+        assert not output["error"]
+        assert response.status_code == 200
+
+def test_delete_perfil(app, created_login, admin_login):
+
+
+    with app.app_context():
+
+        client = app.test_client()
+
+        id = created_login["id"]
+
         url = "/usuario/delete/" + str(id)
-        response = client.delete(url, headers=login)
+        response = client.delete(url, headers=created_login)
         output = json.loads(response.get_data())
         assert response.status_code == 200
         assert not output["error"]
 
-        url = "/usuario/view/" + str(id)
-        response = client.get(url, headers=login)
+        url = "/perfil/view/" + str(id)
+        response = client.get(url, headers=admin_login)
         output = json.loads(response.get_data())
         assert output["error"]
         assert response.status_code == 200

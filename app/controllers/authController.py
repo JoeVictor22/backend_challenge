@@ -100,6 +100,7 @@ def me():
     return (
         jsonify(
             {
+                "error": False,
                 "id": user.id,
                 "email": user.email,
                 "perfil_id": user.perfil_id,

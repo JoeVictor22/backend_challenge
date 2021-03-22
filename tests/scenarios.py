@@ -1,10 +1,6 @@
-SCENARIO_ADMIN = {
-    "email": "teste@gmail.com",
-    "senha": "123456",
-    "cargo_id": 2
-}
 
 SCENARIO_USER = {
+    "cargo_id": 2,
     "email": "teste@gmail.com",
     "senha": "123456",
     "nome": "Teste",

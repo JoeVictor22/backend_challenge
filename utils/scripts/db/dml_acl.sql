@@ -60,15 +60,15 @@ INSERT INTO public.regra(acao, cargo_id, controller_id, permitir) VALUES ('delet
 --- cliente
 INSERT INTO public.regra(acao, cargo_id, controller_id, permitir) VALUES ('all',    2, 1, False);   -- /usuario/all
 INSERT INTO public.regra(acao, cargo_id, controller_id, permitir) VALUES ('view',   2, 1, True);    -- /usuario/view
-INSERT INTO public.regra(acao, cargo_id, controller_id, permitir) VALUES ('add',    2, 1, True);    -- /usuario/add
+INSERT INTO public.regra(acao, cargo_id, controller_id, permitir) VALUES ('add',    2, 1, False);    -- /usuario/add
 INSERT INTO public.regra(acao, cargo_id, controller_id, permitir) VALUES ('edit',   2, 1, True);    -- /usuario/edit
 INSERT INTO public.regra(acao, cargo_id, controller_id, permitir) VALUES ('delete', 2, 1, True);    -- /usuario/delete
 
 INSERT INTO public.regra(acao, cargo_id, controller_id, permitir) VALUES ('all',    2, 2, False);   -- /perfil/all
 INSERT INTO public.regra(acao, cargo_id, controller_id, permitir) VALUES ('view',   2, 2, True);    -- /perfil/view
-INSERT INTO public.regra(acao, cargo_id, controller_id, permitir) VALUES ('add',    2, 2, True);    -- /perfil/add
+INSERT INTO public.regra(acao, cargo_id, controller_id, permitir) VALUES ('add',    2, 2, False);    -- /perfil/add
 INSERT INTO public.regra(acao, cargo_id, controller_id, permitir) VALUES ('edit',   2, 2, True);    -- /perfil/edit
-INSERT INTO public.regra(acao, cargo_id, controller_id, permitir) VALUES ('delete', 2, 2, True);    -- /perfil/delete
+INSERT INTO public.regra(acao, cargo_id, controller_id, permitir) VALUES ('delete', 2, 2, False);    -- /perfil/delete
 
 INSERT INTO public.regra(acao, cargo_id, controller_id, permitir) VALUES ('all',    2, 3, False);    -- /cargo/all
 INSERT INTO public.regra(acao, cargo_id, controller_id, permitir) VALUES ('view',   2, 3, False);    -- /cargo/view
