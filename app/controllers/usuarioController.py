@@ -20,12 +20,12 @@ def usuarioAll():
 
     page = request.args.get("page", 1, type=int)
     rows_per_page = request.args.get("rows_per_page", app.config["ROWS_PER_PAGE"], type=int)
-    email_filter = request.args.get("email_filter", None)
+    email_filter = request.args.get("email", None)
 
     query = Usuario.query
 
     if email_filter != None:
-        query = query.filter(Usuario.email.ilike("%%{}%%".format(email_filter)))
+        query = query.filter(Usuario.email.ilike("%%{}%%".format(email_filter.lower())))
 
     usuarios, output = paginate(query, page, rows_per_page)
 
