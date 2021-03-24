@@ -4,7 +4,7 @@ from tests.scenarios import SCENARIO_USER
 
 from pprint import pprint
 
-def test_get_perfis(app, db, admin_login):
+def test_get_perfis(app, admin_login):
     with app.app_context():
         client = app.test_client()
 
@@ -14,7 +14,7 @@ def test_get_perfis(app, db, admin_login):
         assert not output["error"]
         assert response.status_code == 200
 
-def test_post_perfil(app, db, admin_login):
+def test_post_perfil(app, admin_login):
     with app.app_context():
         client = app.test_client()
 
@@ -24,7 +24,7 @@ def test_post_perfil(app, db, admin_login):
         assert not output["error"]
         assert response.status_code == 200
 
-def test_view_perfil(app, db, admin_login):
+def test_view_perfil(app, admin_login):
     with app.app_context():
         client = app.test_client()
 

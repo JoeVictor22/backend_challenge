@@ -7,32 +7,35 @@ from sqlalchemy import text
 
 from config import BASE_DIR
 
-@pytest.fixture
-def app():
-    return _app
 
-@pytest.fixture
-def db(app):
-    with app.app_context():
+def pytest_sessionstart(session):
+    with _app.app_context():
         _db.drop_all()
         _db.create_all()
 
-        session = db.session()
-        sql_file = open(BASE_DIR + "/utils/scripts/db/dml.sql", "r")
+        session = _db.session()
+
+        sql_file = open(BASE_DIR + "/utils/scripts/db/cidade_uf.sql", "r")
         escaped_sql = text(sql_file.read())
         session.execute(escaped_sql)
         session.flush()
 
-        sql_file = open(BASE_DIR + "/utils/scripts/db/tests.sql", "r")
+        sql_file = open(BASE_DIR + "/utils/scripts/db/rules.sql", "r")
         escaped_sql = text(sql_file.read())
         session.execute(escaped_sql)
         session.commit()
 
         session.close()
-        yield _db
-        _db.drop_all()
-        _db.session.commit()
 
+
+def pytest_sessionfinish(session, exitstatus):
+    _db.drop_all()
+    _db.session.commit()
+
+
+@pytest.fixture
+def app():
+    return _app
 
 
 @pytest.fixture

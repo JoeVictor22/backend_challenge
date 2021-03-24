@@ -19,6 +19,13 @@ migrate_db:
 start:
 	python run.py runserver
 
+test: export STAGE=test
 test:
-    ENV=test
+	rm -Rf migrations/
+	python run.py db init
+	python run.py db migrate
+	python run.py db upgrade
+	python -m utils.scripts.insertData
+
+test:
 	PYTHONPATH=. pytest

@@ -29,7 +29,7 @@ def populate():
 
     insert("db/cidade_uf.sql", output)
 
-    insert("db/dml_acl.sql", output)
+    insert("db/rules.sql", output)
 
     try:
         db.session.commit()

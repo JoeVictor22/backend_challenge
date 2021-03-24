@@ -4,7 +4,7 @@ from tests.scenarios import SCENARIO_USER
 
 from pprint import pprint
 
-def test_get_usuarios(app, db, admin_login):
+def test_get_usuarios(app, admin_login):
     with app.app_context():
         client = app.test_client()
 
@@ -14,7 +14,7 @@ def test_get_usuarios(app, db, admin_login):
         assert not output["error"]
         assert response.status_code == 200
 
-def test_post_usuario(app, db, admin_login):
+def test_post_usuario(app, admin_login):
     with app.app_context():
         client = app.test_client()
 
@@ -24,7 +24,7 @@ def test_post_usuario(app, db, admin_login):
         assert not output["error"]
         assert response.status_code == 200
 
-def test_view_usuario(app, db, admin_login, created_login):
+def test_view_usuario(app, admin_login, created_login):
     with app.app_context():
         client = app.test_client()
 

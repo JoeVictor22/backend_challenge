@@ -15,7 +15,7 @@ default = 'postgresql://postgres:root@localhost/web_app'
 SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URI', default)
 SQLALCHEMY_TEST_DATABASE_URI = os.getenv('DATABASE_TEST_URI', default)
 
-if os.environ.get("ENV", None) == "test":
+if os.environ.get("STAGE", None) == "test":
     SQLALCHEMY_DATABASE_URI = SQLALCHEMY_TEST_DATABASE_URI
 
 SQLALCHEMY_TRACK_MODIFICATIONS = True
