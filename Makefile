@@ -19,6 +19,7 @@ migrate_db:
 start:
 	python run.py runserver
 
+
 test: export STAGE=test
 test:
 	rm -Rf migrations/
@@ -26,6 +27,5 @@ test:
 	python run.py db migrate
 	python run.py db upgrade
 	python -m utils.scripts.insertData
-
 test:
 	PYTHONPATH=. pytest
