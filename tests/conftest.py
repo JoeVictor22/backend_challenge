@@ -5,7 +5,7 @@ from tests.scenarios import SCENARIO_USER
 
 from sqlalchemy import text
 
-from config import BASE_DIR
+from config import BASE_DIR, SQLALCHEMY_DATABASE_URI
 
 
 def pytest_sessionstart(session):
@@ -13,6 +13,8 @@ def pytest_sessionstart(session):
         _db.drop_all()
         _db.create_all()
 
+        print(SQLALCHEMY_DATABASE_URI)
+        
         session = _db.session()
 
         sql_file = open(BASE_DIR + "/utils/scripts/db/cidade_uf.sql", "r")

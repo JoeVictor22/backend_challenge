@@ -2,11 +2,13 @@ version: '3.3'
 
 services:
   web-back:
+    container_name: web-back
     ports:
       - "5000:8080"
     env_file:
       - ./backend_challenge/.homolog.env
   web-front:
+    container_name: web-front
     ports:
       - "3000:3000"
   postgres:

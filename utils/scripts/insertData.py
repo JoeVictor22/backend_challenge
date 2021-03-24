@@ -28,7 +28,6 @@ def populate():
     output = {"error": False, "message": "empty", "saved": [], "skipped": []}
 
     insert("db/cidade_uf.sql", output)
-
     insert("db/rules.sql", output)
 
     try:
