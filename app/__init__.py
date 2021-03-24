@@ -4,9 +4,11 @@ from flask_script import Server, Manager
 from flask_migrate import Migrate, MigrateCommand
 from flask_jwt_extended import JWTManager
 from flask_cors import CORS
+import os
 
 app = Flask(__name__)
 app.config.from_object('config')
+
 
 CORS(app)
 
@@ -32,10 +34,6 @@ from app.models.perfilTable import Perfil
 from app.models.cidadeTable import Cidade
 from app.models.estadoTable import Estado
 from app.models.paisTable import Pais
-
-from app.validators.modelValidator import ModelValidator
-from app.validators.authValidator import AuthValidator
-from app.validators.usuarioValidator import UsuarioValidator
 
 from app.model_schema.usuarioSchema import UsuarioAddSchema, UsuarioEditSchema
 from app.model_schema.perfilSchema import PerfilAddSchema

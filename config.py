@@ -13,8 +13,10 @@ DEBUG = True
 default = 'postgresql://postgres:root@localhost/web_app'
 
 SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URI', default)
+SQLALCHEMY_TEST_DATABASE_URI = os.getenv('DATABASE_TEST_URI', default)
 
-DEFAULT_DATE_FORMAT = "%d/%m/%Y"
+if os.environ.get("ENV", None) == "test":
+    SQLALCHEMY_DATABASE_URI = SQLALCHEMY_TEST_DATABASE_URI
 
 SQLALCHEMY_TRACK_MODIFICATIONS = True
 
@@ -27,4 +29,5 @@ ROWS_PER_PAGE = 10
 JWT_SECRET_KEY = '25bnDG2yKyvb9HRUSrysFBkbVnFONH8J'
 
 #--------------------------------------------------------------------------------------------------#
+
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))

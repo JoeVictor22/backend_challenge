@@ -3,20 +3,38 @@ from app import app as _app, db as _db, Usuario
 import json
 from tests.scenarios import SCENARIO_USER
 
+from sqlalchemy import text
+
+from config import BASE_DIR
+
 @pytest.fixture
 def app():
     return _app
 
 @pytest.fixture
 def db(app):
-    '''
     with app.app_context():
         _db.drop_all()
         _db.create_all()
+
+        session = db.session()
+        sql_file = open(BASE_DIR + "/utils/scripts/db/dml.sql", "r")
+        escaped_sql = text(sql_file.read())
+        session.execute(escaped_sql)
+        session.flush()
+
+        sql_file = open(BASE_DIR + "/utils/scripts/db/tests.sql", "r")
+        escaped_sql = text(sql_file.read())
+        session.execute(escaped_sql)
+        session.commit()
+
+        session.close()
         yield _db
         _db.drop_all()
         _db.session.commit()
-    '''
+
+
+
 @pytest.fixture
 def admin_login(app):
     with app.app_context():

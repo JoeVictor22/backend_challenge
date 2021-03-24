@@ -5,14 +5,14 @@ services:
     ports:
       - "5000:8080"
     env_file:
-      - .homolog.env
+      - ./backend_challenge/.homolog.env
   web-front:
     ports:
       - "3000:3000"
-    env_file:
-      - .homolog.env
   postgres:
     ports:
       - "5433:5432"
     env_file:
-      - .homolog.env
+      - ./backend_challenge/.homolog.env
+
+

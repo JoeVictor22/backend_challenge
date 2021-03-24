@@ -20,4 +20,5 @@ start:
 	python run.py runserver
 
 test:
+    ENV=test
 	PYTHONPATH=. pytest

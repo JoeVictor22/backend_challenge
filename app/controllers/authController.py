@@ -9,7 +9,7 @@ from flask_jwt_extended import (
 )
 from sqlalchemy import or_
 from app import Usuario, fieldsFormatter, Perfil
-from app import AuthValidator, AuthLoginSchema
+from app import AuthLoginSchema
 from flask_pydantic import validate
 from werkzeug.security import check_password_hash
 

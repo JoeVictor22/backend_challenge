@@ -5,7 +5,6 @@ from sqlalchemy import exc
 from werkzeug.security import generate_password_hash
 from . import resource, paginate
 from app import Perfil
-from app import UsuarioValidator
 from app import fieldsFormatter
 
 from pprint import pprint
