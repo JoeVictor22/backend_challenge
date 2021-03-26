@@ -18,7 +18,9 @@ db  = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
 manager = Manager(app)
-server = Server(host="0.0.0.0", port=5000)
+
+
+server = Server(host="0.0.0.0", port=os.getenv('PORT', 5000))
 manager.add_command("runserver", server)
 manager.add_command('db', MigrateCommand)
 

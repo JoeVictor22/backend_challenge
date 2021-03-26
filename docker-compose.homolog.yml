@@ -11,10 +11,17 @@ services:
     container_name: web-front
     ports:
       - "3000:3000"
+    env_file:
+      - ./backend_challenge/.homolog.env
   postgres:
+    container_name: postgres_pontotel
     ports:
       - "5433:5432"
     env_file:
       - ./backend_challenge/.homolog.env
+    environment:
+      POSTGRES_PASSWORD: $DB_PASSWORD
+      POSTGRES_USER: $DB_USER
+      POSTGRES_DB: $DB_NAME
 
 

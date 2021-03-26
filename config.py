@@ -10,10 +10,13 @@ DEBUG = True
 
 #--------------------------------------------------------------------------------------------------#
 
+
 default = 'postgresql://postgres:root@localhost/web_app'
 
 SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URI', default)
-SQLALCHEMY_TEST_DATABASE_URI = os.getenv('DATABASE_TEST_URI', default)
+SQLALCHEMY_TEST_DATABASE_URI = os.getenv('DATABASE_TEST_URI', None)
+
+print(SQLALCHEMY_DATABASE_URI)
 
 if os.environ.get("STAGE", None) == "test":
     SQLALCHEMY_DATABASE_URI = SQLALCHEMY_TEST_DATABASE_URI
