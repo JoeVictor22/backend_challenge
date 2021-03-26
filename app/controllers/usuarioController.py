@@ -79,8 +79,8 @@ def usuarioView(usuario_id):
 @resource("usuario-add")
 @validate(body=UsuarioAddSchema)
 def usuarioAdd():
-
     data = request.get_json()
+
     email = data.get("email").lower()
 
     if Usuario.query.filter_by(email=email).first():
@@ -122,15 +122,16 @@ def usuarioAdd():
 @resource("usuario-edit")
 @validate(body=UsuarioEditSchema)
 def usuarioEdit(usuario_id):
+    data = request.get_json()
 
     current_user = get_jwt_identity()
-    user = Usuario.query.get(current_user)
+    logged_user = Usuario.query.get(current_user)
 
     # guarantee that user can only edit itself
-    if user is None:
+    if logged_user is None:
         return jsonify({"message": Messages.REGISTER_NOT_FOUND.format(current_user), "error": True})
-    if user.cargo_id == 2:
-        usuario_id = user.id
+    if logged_user.cargo_id == 2:
+        usuario_id = logged_user.id
 
     usuario = Usuario.query.get(usuario_id)
 
@@ -139,13 +140,19 @@ def usuarioEdit(usuario_id):
             {"message": Messages.REGISTER_NOT_FOUND.format(usuario_id), "error": True}
         )
 
-    data = request.get_json()
     email = data.get("email").lower()
-
     if Usuario.query.filter(Usuario.email == email, Usuario.id != usuario_id).first():
         return jsonify(
             {"message": "O email informado já esta cadastrado", "error": True}
         )
+
+
+    # if user is tring to edit itself, let it change password
+    if logged_user.id == usuario.id:
+        # check should change password
+        if data.get('senha') is not None:
+            hashed_pass = generate_password_hash(data.get('senha'), method="sha256")
+            usuario.senha = hashed_pass
 
     usuario.email = email
     usuario.perfil_id = data.get("perfil_id")
@@ -159,13 +166,11 @@ def usuarioEdit(usuario_id):
                 "error": False,
             }
         )
-    except exc.IntegrityError as e:
-        print(e)
+    except exc.IntegrityError:
         db.session.rollback()
         return jsonify(
             {"message": Messages.REGISTER_CHANGE_INTEGRITY_ERROR, "error": True}
         )
-
 
 # --------------------------------------------------------------------------------------------------#
 
