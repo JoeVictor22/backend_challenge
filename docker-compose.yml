@@ -12,8 +12,8 @@ services:
       - ./backend_challenge/.env
     volumes:
       - './backend_challenge:/web-back'
-    #depends_on:
-    #  - postgres
+    depends_on:
+      - postgres
     networks:
         - backend
         - frontend
@@ -29,8 +29,8 @@ services:
       dockerfile: ./backend_challenge/docker/frontend/Dockerfile
     volumes:
       - './frontend_challenge:/web-front'
-    #depends_on:
-    #  - web-back
+    depends_on:
+      - web-back
     networks:
       - frontend
     command: npm run start

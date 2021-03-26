@@ -1,48 +1,29 @@
-import os
 from app import db
-import sqlparse
-from pprint import pprint
+from config import BASE_DIR
+
+from sqlalchemy import exc, text
 
 # rodar a partir da raiz
 # python3 -m scripts.insertData
 def populate():
-    def insert(filePath, output):
+    def insert(filePath):
 
-        fd = open(os.path.dirname(__file__) + "/" + filePath, "r")
-        sqlFile = fd.read()
-        fd.close()
 
-        sqlCommands = sqlFile.split(";")
+        sql_file = open(BASE_DIR + filePath, "r")
+        escaped_sql = text(sql_file.read())
+        db.session.execute(escaped_sql)
 
-        for command in sqlCommands:
-            try:
-                command = sqlparse.format(command, strip_comments=True)
-                command = command.replace("\n", "")
+        try:
+            db.session.commit()
+        except exc.IntegrityError:
+            print("Ocorreram errors ao executar o seguinte script: " + filePath)
 
-                db.session.execute(command)
-                output["saved"].append(command)
-            except:
-                output["skipped"].append(command)
-                print("Command skipped: ", command)
 
-    output = {"error": False, "message": "empty", "saved": [], "skipped": []}
+    insert("/utils/scripts/db/cidade_uf.sql")
+    insert("/utils/scripts/db/rules.sql")
 
-    insert("db/cidade_uf.sql", output)
-    insert("db/rules.sql", output)
-
-    try:
-        db.session.commit()
-        output["message"] = "Dados salvos com sucesso"
-        print("\nOUTPUT: \n")
-        pprint(output["skipped"])
-    except:
-        db.session.rollback()
-        print("rollback feito")
-        output["error"] = True
-        output["message"] = "Erro na inserção"
+    # insert("/utils/scripts/db/test_data.sql")
 
 
 if __name__ == "__main__":
     populate()
-    print(os.path.dirname(os.path.abspath(__file__)))
-    print(os.path.dirname(__file__))
