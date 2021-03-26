@@ -1,3 +1,14 @@
+# Flask project files
+venv/*
+venv/
+venv
+migrations/versions/*
+migrations/*
+.idea/*
+.env
+
+
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
