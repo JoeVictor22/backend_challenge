@@ -2,7 +2,6 @@ import json
 
 from tests.scenarios import SCENARIO_USER
 
-from pprint import pprint
 
 def test_get_usuarios(app, admin_login):
     with app.app_context():

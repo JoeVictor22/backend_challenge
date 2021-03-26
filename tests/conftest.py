@@ -88,7 +88,6 @@ def created_login(app):
         url = "/me"
         response = client.get(url, headers=login_criado)
         output = json.loads(response.get_data())
-        print(output)
 
         assert response.status_code == 200
 
