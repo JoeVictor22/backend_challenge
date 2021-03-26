@@ -5,10 +5,8 @@ from sqlalchemy import exc
 from werkzeug.security import generate_password_hash
 from . import resource, paginate
 from app import Usuario
-from app import fieldsFormatter
 
 
-from pprint import pprint
 from flask_pydantic import validate
 from app import UsuarioAddSchema, UsuarioEditSchema
 
@@ -48,6 +46,15 @@ def usuarioAll():
 @jwt_required
 @resource("usuario-view")
 def usuarioView(usuario_id):
+
+    # guarantee that user can only view itself
+    current_user = get_jwt_identity()
+    user = Usuario.query.get(current_user)
+    if user is None:
+        return jsonify({"message": Messages.REGISTER_NOT_FOUND.format(current_user), "error": True})
+    if user.cargo_id == 2:
+        usuario_id = user.id
+
     usuario = Usuario.query.get(usuario_id)
 
     if not usuario:
@@ -115,6 +122,16 @@ def usuarioAdd():
 @resource("usuario-edit")
 @validate(body=UsuarioEditSchema)
 def usuarioEdit(usuario_id):
+
+    # guarantee that user can only edit itself
+    current_user = get_jwt_identity()
+    user = Usuario.query.get(current_user)
+    if user is None:
+        return jsonify({"message": Messages.REGISTER_NOT_FOUND.format(current_user), "error": True})
+    if user.cargo_id == 2:
+        usuario_id = user.id
+
+
     usuario = Usuario.query.get(usuario_id)
 
     if not usuario:
@@ -142,7 +159,8 @@ def usuarioEdit(usuario_id):
                 "error": False,
             }
         )
-    except exc.IntegrityError:
+    except exc.IntegrityError as e:
+        print(e)
         db.session.rollback()
         return jsonify(
             {"message": Messages.REGISTER_CHANGE_INTEGRITY_ERROR, "error": True}

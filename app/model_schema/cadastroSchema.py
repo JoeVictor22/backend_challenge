@@ -20,10 +20,8 @@ class CadastroAddSchema(BaseModel):
 
     cidade_id: int
 
-    # todo, validate cpf and pis duplicate
     @validator('email')
     def email_valid(cls, email):
-
         email = email.lower()
         if re.match('^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$', email) is None:
             raise ValueError('O email informado é invalido.')
@@ -40,7 +38,6 @@ class CadastroAddSchema(BaseModel):
             return cpf
         else:
             raise ValueError('O CPF informado é inválido.')
-
 
     @validator('pis')
     def pis_valid(cls, pis):

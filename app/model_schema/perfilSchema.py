@@ -1,7 +1,5 @@
 from typing import Optional
-import re
 from pydantic import BaseModel, validator, constr
-from app import Usuario
 from validate_docbr import CPF, PIS
 
 class PerfilAddSchema(BaseModel):
@@ -16,7 +14,6 @@ class PerfilAddSchema(BaseModel):
 
     cidade_id: int
 
-    # custom validation on email field
     @validator('cpf')
     def cpf_valid(cls, cpf):
         if CPF().validate(cpf):

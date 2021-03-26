@@ -3,11 +3,9 @@ from flask import request, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from sqlalchemy import exc
 from werkzeug.security import generate_password_hash
-from . import resource, paginate
 from app import Usuario, Perfil
 from app import fieldsFormatter
 
-from pprint import pprint
 from flask_pydantic import validate
 from app import CadastroAddSchema
 from traceback import print_exc

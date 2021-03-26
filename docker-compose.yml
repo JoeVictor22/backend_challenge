@@ -9,7 +9,7 @@ services:
       context: .
       dockerfile: ./backend_challenge/docker/backend/Dockerfile
     env_file:
-      - ./backend_challenge/.env
+      - ./backend_challenge/.dev.env
     volumes:
       - './backend_challenge:/web-back'
     depends_on:
@@ -29,6 +29,8 @@ services:
       dockerfile: ./backend_challenge/docker/frontend/Dockerfile
     volumes:
       - './frontend_challenge:/web-front'
+    env_file:
+      - ./backend_challenge/.dev.env
     depends_on:
       - web-back
     networks:
@@ -42,7 +44,7 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     env_file:
-      - ./backend_challenge/.env
+      - ./backend_challenge/.dev.env
     environment:
       POSTGRES_PASSWORD: $DB_PASSWORD
       POSTGRES_USER: $DB_USER

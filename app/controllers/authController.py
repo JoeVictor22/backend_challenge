@@ -25,7 +25,6 @@ def login():
 
     cpf_pis = fieldsFormatter.CpfFormatter().clean(email)
 
-
     user = db.session.query(Usuario).join(Perfil, Perfil.id == Usuario.perfil_id, isouter=True).filter(
         or_(
             Usuario.email == email,

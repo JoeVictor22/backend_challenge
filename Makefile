@@ -5,6 +5,9 @@ default: start
 install:
 	pip install -r requirements.txt
 
+freeze:
+    pip freeze > requirements.txt
+
 create_db:
 	rm -Rf migrations/
 	python run.py db init
@@ -18,7 +21,6 @@ migrate_db:
 
 start:
 	python run.py runserver
-
 
 test: export STAGE=test
 test:
