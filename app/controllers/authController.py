@@ -33,21 +33,20 @@ def login():
         )
     ).first()
 
-
-    error = {
+    output = {
         "form": [],
         "error": False
     }
 
     if not user:
-        error["form"].append({"message": Messages.AUTH_USER_NOT_FOUND})
-        error["error"] = True
+        output["form"].append({"message": Messages.AUTH_USER_NOT_FOUND})
+        output["error"] = True
     elif not check_password_hash(user.senha, str(data.get("senha"))):
-        error["form"].append({"message": Messages.AUTH_USER_PASS_ERROR})
-        error["error"] = True
+        output["form"].append({"message": Messages.AUTH_USER_PASS_ERROR})
+        output["error"] = True
 
-    if error["error"]:
-        return jsonify(error)
+    if output["error"]:
+        return jsonify(output)
 
     return (
         jsonify(
@@ -67,7 +66,6 @@ def login():
                     "id": user.cargo.id,
                     "name": user.cargo.nome
                 },
-
             }
         ),
         200,
@@ -75,7 +73,6 @@ def login():
 
 
 # --------------------------------------------------------------------------------------------------#
-
 
 @app.route("/refresh", methods=["POST"])
 @jwt_refresh_token_required
@@ -86,7 +83,6 @@ def refresh():
 
 
 # --------------------------------------------------------------------------------------------------#
-
 
 @app.route("/me", methods=["GET"])
 @jwt_required

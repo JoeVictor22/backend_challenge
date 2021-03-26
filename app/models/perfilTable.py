@@ -14,7 +14,6 @@ class Perfil(db.Model):
 
     cidade_id = db.Column(db.BigInteger, db.ForeignKey("cidade.id"), nullable=False)
 
-
     # --------------------------------------------------------------------------------------------------#
 
     def __init__(self, nome, pis, cpf, cep, rua, numero, complemento, cidade_id):

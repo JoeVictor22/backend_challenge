@@ -18,7 +18,6 @@ def cidadeAll():
     if nome_filter != None:
         query = query.filter(Cidade.nome.ilike("%%{}%%".format(nome_filter)))
 
-
     cidades, output = paginate(query, page, rows_per_page)
 
     for cidade in cidades:
@@ -39,6 +38,7 @@ def cidadeAll():
 #@jwt_required
 #@resource("cidade-view")
 def cidadeView(cidade_id):
+
     cidade = Cidade.query.get(cidade_id)
 
     if not cidade:

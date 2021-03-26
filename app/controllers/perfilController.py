@@ -3,7 +3,7 @@ from flask import request, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from sqlalchemy import exc
 from . import resource, paginate
-from app import Perfil
+from app import Perfil, Usuario
 from app import fieldsFormatter
 
 from flask_pydantic import validate
@@ -50,6 +50,16 @@ def perfilAll():
 @jwt_required
 @resource("perfil-view")
 def perfilView(perfil_id):
+
+    current_user = get_jwt_identity()
+    user = Usuario.query.get(current_user)
+
+    # guarantee that user can only view itself
+    if user is None:
+        return jsonify({"message": Messages.REGISTER_NOT_FOUND.format(current_user), "error": True})
+    if user.cargo_id == 2:
+        perfil_id = user.perfil_id
+
     perfil = Perfil.query.get(perfil_id)
 
     if not perfil:
@@ -78,8 +88,8 @@ def perfilView(perfil_id):
 @resource("perfil-add")
 @validate(body=PerfilAddSchema)
 def perfilAdd():
-    data = request.get_json()
 
+    data = request.get_json()
 
     perfil = Perfil(
         nome=data.get("nome"),
@@ -117,6 +127,16 @@ def perfilAdd():
 @resource("perfil-edit")
 @validate(body=PerfilAddSchema)
 def perfilEdit(perfil_id):
+
+    current_user = get_jwt_identity()
+    user = Usuario.query.get(current_user)
+
+    # guarantee that user can only view itself
+    if user is None:
+        return jsonify({"message": Messages.REGISTER_NOT_FOUND.format(current_user), "error": True})
+    if user.cargo_id == 2:
+        perfil_id = user.perfil_id
+
     perfil = Perfil.query.get(perfil_id)
 
     if not perfil:

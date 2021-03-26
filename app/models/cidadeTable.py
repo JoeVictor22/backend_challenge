@@ -9,15 +9,14 @@ class Cidade(db.Model):
 
 	estado_id = db.Column(db.Integer, db.ForeignKey('estado.id'), nullable=False)
 
-
-#--------------------------------------------------------------------------------------------------#
+	#--------------------------------------------------------------------------------------------------#
 
 	def __init__(self, nome, ibge, estado_id):
 		self.nome = nome
 		self.ibge = ibge
 		self.estado_id = estado_id
 
-#--------------------------------------------------------------------------------------------------#
+	#--------------------------------------------------------------------------------------------------#
 
 	def __repr__(self):
 		return "<Cidade %r %r %r %r >" %(self.id, self.nome, self.ibge, self.estado_id)

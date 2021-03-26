@@ -21,7 +21,7 @@ def usuarioAll():
 
     query = Usuario.query
 
-    if email_filter != None:
+    if email_filter is not None:
         query = query.filter(Usuario.email.ilike("%%{}%%".format(email_filter.lower())))
 
     usuarios, output = paginate(query, page, rows_per_page)
@@ -47,9 +47,10 @@ def usuarioAll():
 @resource("usuario-view")
 def usuarioView(usuario_id):
 
-    # guarantee that user can only view itself
     current_user = get_jwt_identity()
     user = Usuario.query.get(current_user)
+
+    # guarantee that user can only view itself
     if user is None:
         return jsonify({"message": Messages.REGISTER_NOT_FOUND.format(current_user), "error": True})
     if user.cargo_id == 2:
@@ -78,7 +79,6 @@ def usuarioView(usuario_id):
 @resource("usuario-add")
 @validate(body=UsuarioAddSchema)
 def usuarioAdd():
-
 
     data = request.get_json()
     email = data.get("email").lower()
@@ -123,14 +123,14 @@ def usuarioAdd():
 @validate(body=UsuarioEditSchema)
 def usuarioEdit(usuario_id):
 
-    # guarantee that user can only edit itself
     current_user = get_jwt_identity()
     user = Usuario.query.get(current_user)
+
+    # guarantee that user can only edit itself
     if user is None:
         return jsonify({"message": Messages.REGISTER_NOT_FOUND.format(current_user), "error": True})
     if user.cargo_id == 2:
         usuario_id = user.id
-
 
     usuario = Usuario.query.get(usuario_id)
 
@@ -174,6 +174,7 @@ def usuarioEdit(usuario_id):
 @jwt_required
 @resource("usuario-delete")
 def usuarioDelete(usuario_id):
+
     usuario = Usuario.query.get(usuario_id)
 
     if not usuario:

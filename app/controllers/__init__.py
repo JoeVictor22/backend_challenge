@@ -40,7 +40,7 @@ def resource(resource_name):
                 Controller.nome == contr,
             ).first()
 
-            if data == None:
+            if data is None:
                 return (
                     jsonify(
                         {

@@ -1,7 +1,6 @@
 from app import db
 from sqlalchemy.orm import validates
 
-
 class Usuario(db.Model):
     __tablename__ = "usuario"
 

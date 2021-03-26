@@ -13,7 +13,6 @@ class Regra(db.Model):
 
     permitir = db.Column(db.Boolean, nullable=False)
 
-
     # --------------------------------------------------------------------------------------------------#
 
     def __init__(self, acao, cargo_id, controller_id, permitir):
