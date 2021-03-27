@@ -1,9 +1,8 @@
 from typing import Optional
 import re
 from pydantic import BaseModel, validator, constr
-from app import Usuario, Perfil, fieldsFormatter
-
 from validate_docbr import CPF, PIS
+
 
 class CadastroAddSchema(BaseModel):
 

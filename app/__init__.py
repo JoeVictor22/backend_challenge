@@ -47,5 +47,4 @@ from app.controllers import authController
 from app.controllers import perfilController
 from app.controllers import cargoController
 from app.controllers import cidadeController
-from app.controllers import cadastroController
 

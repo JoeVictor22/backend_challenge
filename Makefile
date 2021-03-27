@@ -6,7 +6,7 @@ install:
 	pip install -r requirements.txt
 
 freeze:
-    pip freeze > requirements.txt
+	pip freeze > requirements.txt
 
 create_db:
 	rm -Rf migrations/
