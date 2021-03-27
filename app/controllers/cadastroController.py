@@ -1,7 +1,7 @@
 from app import app, db, Messages
 from flask import request, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
-from sqlalchemy import exc
+from sqlalchemy import exc, or_
 from werkzeug.security import generate_password_hash
 from app import Usuario, Perfil
 from app import fieldsFormatter
@@ -16,6 +16,21 @@ from traceback import print_exc
 @validate(body=CadastroAddSchema)
 def cadastroAdd():
     data = request.get_json()
+
+    # if there is already a user with email
+    if Usuario.query.filter_by(email=data.get["email"]).first():
+        return jsonify(
+            {"message": Messages.ALREADY_EXISTS.format("email"), "error": True}
+        )
+
+    # check if there is already a user with cpf/pis
+    cpf = fieldsFormatter.CpfFormatter().clean(data["cpf"])
+    pis = fieldsFormatter.PisFormatter().clean(data["pis"])
+    perfil = Perfil.query.filter(or_(Perfil.cpf == cpf, Perfil.pis == pis)).first()
+    if perfil is not None:
+        return jsonify(
+            {"message": Messages.ALREADY_EXISTS.format("CPF/PIS"), "error": True}
+        )
 
     hashed_pass = generate_password_hash(data.get('senha'), method="sha256")
     email = data.get("email").lower()
