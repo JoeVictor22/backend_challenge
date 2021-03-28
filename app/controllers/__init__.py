@@ -11,7 +11,6 @@ from app import Regra
 from pydantic import BaseModel, ValidationError, FilePath
 
 from app import error_messages
-from pprint import pprint
 
 # access control
 def resource(resource_name):
@@ -87,7 +86,6 @@ def field_validator(validator):
             try:
                 validator.parse_raw(data)
             except ValidationError as e:
-                pprint(e.errors())
                 for error in e.errors():
                     msg = error_messages.get(error['type'])
                     ctx = error.get('ctx')

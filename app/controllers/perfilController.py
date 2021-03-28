@@ -2,7 +2,7 @@ from app import app, db, Messages
 from flask import request, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from sqlalchemy import exc, or_
-from . import resource, paginate
+from . import resource, paginate, field_validator
 from app import Perfil, Usuario
 from app import fieldsFormatter
 
@@ -86,7 +86,7 @@ def perfilView(perfil_id):
 @app.route("/perfil/add", methods=["POST"])
 @jwt_required
 @resource("perfil-add")
-@validate(body=PerfilAddSchema)
+@field_validator(PerfilAddSchema)
 def perfilAdd():
 
     data = request.get_json()
@@ -134,7 +134,7 @@ def perfilAdd():
 @app.route("/perfil/edit/<perfil_id>", methods=["PUT"])
 @jwt_required
 @resource("perfil-edit")
-@validate(body=PerfilAddSchema)
+@field_validator(PerfilAddSchema)
 def perfilEdit(perfil_id):
     data = request.get_json()
 

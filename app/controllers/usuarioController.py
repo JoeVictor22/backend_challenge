@@ -80,7 +80,7 @@ def usuarioView(usuario_id):
 @app.route("/usuario/add", methods=["POST"])
 @jwt_required
 @resource("usuario-add")
-@validate(body=UsuarioAddSchema)
+@field_validator(UsuarioAddSchema)
 def usuarioAdd():
     data = request.get_json()
 
@@ -129,7 +129,7 @@ def usuarioAdd():
 @app.route("/usuario/edit/<usuario_id>", methods=["PUT"])
 @jwt_required
 @resource("usuario-edit")
-@validate(body=UsuarioEditSchema)
+@field_validator(UsuarioEditSchema)
 def usuarioEdit(usuario_id):
     data = request.get_json()
 
@@ -232,7 +232,6 @@ def usuarioDelete(usuario_id):
 # --------------------------------------------------------------------------------------------------#
 
 @app.route("/usuario/cadastro", methods=["POST"])
-#@validate(body=CadastroAddSchema)
 @field_validator(CadastroAddSchema)
 def cadastroAdd():
     data = request.get_json()
