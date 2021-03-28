@@ -25,6 +25,7 @@ manager.add_command("runserver", server)
 manager.add_command('db', MigrateCommand)
 
 import Messages
+from translation import error_messages
 from app.components import fieldsFormatter
 
 from app.models.usuarioTable import Usuario

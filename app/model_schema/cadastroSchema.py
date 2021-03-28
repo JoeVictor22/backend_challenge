@@ -2,7 +2,7 @@ from typing import Optional
 import re
 from pydantic import BaseModel, validator, constr
 from validate_docbr import CPF, PIS
-
+import ujson
 
 class CadastroAddSchema(BaseModel):
 
@@ -18,6 +18,9 @@ class CadastroAddSchema(BaseModel):
     complemento: Optional[constr(min_length=0, max_length=50)]
 
     cidade_id: int
+
+    class Config:
+        json_loads = ujson.loads
 
     @validator('email')
     def email_validator(cls, email):

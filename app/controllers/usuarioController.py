@@ -1,5 +1,5 @@
 from app import app, db, Messages
-from . import resource, paginate
+from . import resource, paginate, field_validator
 from flask import request, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from sqlalchemy import exc, or_
@@ -232,7 +232,8 @@ def usuarioDelete(usuario_id):
 # --------------------------------------------------------------------------------------------------#
 
 @app.route("/usuario/cadastro", methods=["POST"])
-@validate(body=CadastroAddSchema)
+#@validate(body=CadastroAddSchema)
+@field_validator(CadastroAddSchema)
 def cadastroAdd():
     data = request.get_json()
 
