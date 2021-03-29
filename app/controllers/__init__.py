@@ -1,5 +1,5 @@
 from app import db, Messages
-from flask import jsonify
+from flask import jsonify, request
 from functools import wraps
 from flask_jwt_extended import get_jwt_identity
 
@@ -8,7 +8,11 @@ from app import Cargo
 from app import Controller
 from app import Regra
 
-# authorization
+from pydantic import BaseModel, ValidationError, FilePath
+
+from app import error_messages
+
+# access control
 def resource(resource_name):
     def wrapper(f):
         @wraps(f)
@@ -70,6 +74,48 @@ def resource(resource_name):
 
     return wrapper
 
+# --------------------------------------------------------------------------------------------------#
+
+# pydantic validator
+def field_validator(validator):
+    def wrapper(f):
+        @wraps(f)
+        def wrapped(*args, **kwargs):
+            data = request.get_data()
+
+            try:
+                validator.parse_raw(data)
+            except ValidationError as e:
+                for error in e.errors():
+                    msg = error_messages.get(error['type'])
+                    ctx = error.get('ctx')
+
+                    if msg:
+                        if ctx:
+                            msg = msg.format(**ctx)
+                        error['msg'] = msg
+
+                validation_errors = {
+                    "body_params": e.errors()
+                }
+
+                return (
+                    jsonify(
+                        {
+                            "validation_error": validation_errors,
+                            "status_code": 400,
+                        }
+                    ),
+                    401,
+                )
+
+            return f(*args, **kwargs)
+        return wrapped
+    return wrapper
+
+# --------------------------------------------------------------------------------------------------#
+
+# item pagination
 def paginate(query, page=1, rows_per_page=1):
 
     pagination = query.paginate(page=page, per_page=rows_per_page, error_out=False)

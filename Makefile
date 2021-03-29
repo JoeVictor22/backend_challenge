@@ -6,7 +6,7 @@ install:
 	pip install -r requirements.txt
 
 freeze:
-    pip freeze > requirements.txt
+	pip freeze > requirements.txt
 
 create_db:
 	rm -Rf migrations/
@@ -22,11 +22,12 @@ migrate_db:
 start:
 	python run.py runserver
 
+venv:
+	virtualenv venv
+	. $(shell pwd)/venv/bin/activate
+	pip install -r requirements.txt
+
 test: export STAGE=test
-test:
-	rm -Rf migrations/
-	python run.py db init
-	python run.py db migrate
-	python run.py db upgrade
-test:
+test: venv
 	PYTHONPATH=. pytest
+

@@ -7,6 +7,7 @@ services:
       - "5000:8080"
     env_file:
       - ./backend_challenge/.homolog.env
+    command: gunicorn --workers 10 --bind 0.0.0.0:8080 -m 007 wsgi:app
   web-front:
     container_name: web-front
     ports:
@@ -15,8 +16,8 @@ services:
       - ./backend_challenge/.homolog.env
   postgres:
     container_name: postgres_pontotel
-    ports:
-      - "5433:5432"
+    #ports:
+    #  - "5433:5432"
     env_file:
       - ./backend_challenge/.homolog.env
     environment:

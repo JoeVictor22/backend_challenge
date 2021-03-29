@@ -1,8 +1,8 @@
 from app import app, db, Messages
 from flask import request, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
-from sqlalchemy import exc
-from . import resource, paginate
+from sqlalchemy import exc, or_
+from . import resource, paginate, field_validator
 from app import Perfil, Usuario
 from app import fieldsFormatter
 
@@ -86,10 +86,19 @@ def perfilView(perfil_id):
 @app.route("/perfil/add", methods=["POST"])
 @jwt_required
 @resource("perfil-add")
-@validate(body=PerfilAddSchema)
+@field_validator(PerfilAddSchema)
 def perfilAdd():
 
     data = request.get_json()
+
+    # check if there is already a user registered
+    cpf = fieldsFormatter.CpfFormatter().clean(data["cpf"])
+    pis = fieldsFormatter.PisFormatter().clean(data["pis"])
+    perfil = Perfil.query.filter(or_(Perfil.cpf == cpf, Perfil.pis == pis)).first()
+    if perfil is not None:
+        return jsonify(
+            {"message": Messages.ALREADY_EXISTS.format("CPF/PIS"), "error": True}
+        )
 
     perfil = Perfil(
         nome=data.get("nome"),
@@ -125,8 +134,9 @@ def perfilAdd():
 @app.route("/perfil/edit/<perfil_id>", methods=["PUT"])
 @jwt_required
 @resource("perfil-edit")
-@validate(body=PerfilAddSchema)
+@field_validator(PerfilAddSchema)
 def perfilEdit(perfil_id):
+    data = request.get_json()
 
     current_user = get_jwt_identity()
     user = Usuario.query.get(current_user)
@@ -137,14 +147,22 @@ def perfilEdit(perfil_id):
     if user.cargo_id == 2:
         perfil_id = user.perfil_id
 
+    # check if there is already a user registered, excluding itself
+    cpf = fieldsFormatter.CpfFormatter().clean(data["cpf"])
+    pis = fieldsFormatter.PisFormatter().clean(data["pis"])
+    perfil = Perfil.query.filter(or_(Perfil.cpf == cpf, Perfil.pis == pis)).filter(Perfil.id != perfil_id).first()
+    if perfil is not None:
+        return jsonify(
+            {"message": Messages.ALREADY_EXISTS.format("CPF/PIS"), "error": True}
+        )
+
+
     perfil = Perfil.query.get(perfil_id)
 
     if not perfil:
         return jsonify(
             {"message": Messages.REGISTER_NOT_FOUND.format(perfil_id), "error": True}
         )
-
-    data = request.get_json()
 
     perfil.nome = data.get("nome")
     perfil.pis = fieldsFormatter.PisFormatter().clean(data.get("pis")),

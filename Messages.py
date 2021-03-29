@@ -17,3 +17,5 @@ AUTH_USER_PASS_ERROR = "A senha informada não corresponde com a do usuário."
 AUTH_USER_DENIED = "O usuário não possui permissão para acessar a URL solicitada."
 
 USER_INVALID_DELETE = "Não é permitido deletar esse usuário."
+
+ALREADY_EXISTS = "O {} informado já está cadastrado."

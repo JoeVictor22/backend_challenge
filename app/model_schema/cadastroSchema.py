@@ -1,9 +1,8 @@
 from typing import Optional
 import re
 from pydantic import BaseModel, validator, constr
-from app import Usuario, Perfil, fieldsFormatter
-
 from validate_docbr import CPF, PIS
+import json
 
 class CadastroAddSchema(BaseModel):
 
@@ -20,25 +19,19 @@ class CadastroAddSchema(BaseModel):
 
     cidade_id: int
 
+    class Config:
+        json_loads = json.loads
+
     @validator('email')
     def email_validator(cls, email):
         email = email.lower()
         if re.match('^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$', email) is None:
             raise ValueError('O email informado é invalido.')
-        if Usuario.query.filter_by(email=email).first():
-            raise ValueError('O email informado já está cadastrado.')
         return email
 
     @validator('cpf')
     def cpf_validator(cls, cpf):
         if CPF().validate(cpf):
-
-            cpf = fieldsFormatter.PisFormatter().clean(cpf)
-
-            perfil = Perfil.query.filter_by(cpf=cpf).first()
-
-            if perfil is not None:
-                raise ValueError('O CPF informado já está cadastrado.')
             return cpf
         else:
             raise ValueError('O CPF informado é inválido.')
@@ -46,12 +39,6 @@ class CadastroAddSchema(BaseModel):
     @validator('pis')
     def pis_validator(cls, pis):
         if PIS().validate(pis):
-            pis = fieldsFormatter.PisFormatter().clean(pis)
-
-            perfil = Perfil.query.filter_by(pis=pis).first()
-
-            if perfil is not None:
-                raise ValueError('O PIS informado já está cadastrado.')
             return pis
         else:
             raise ValueError('O PIS informado é inválido.')

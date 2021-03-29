@@ -25,6 +25,7 @@ manager.add_command("runserver", server)
 manager.add_command('db', MigrateCommand)
 
 import Messages
+from translation import error_messages
 from app.components import fieldsFormatter
 
 from app.models.usuarioTable import Usuario
@@ -47,5 +48,4 @@ from app.controllers import authController
 from app.controllers import perfilController
 from app.controllers import cargoController
 from app.controllers import cidadeController
-from app.controllers import cadastroController
 

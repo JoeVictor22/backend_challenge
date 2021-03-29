@@ -7,6 +7,7 @@ from flask_jwt_extended import (
     jwt_refresh_token_required,
     get_jwt_identity,
 )
+from . import field_validator
 from sqlalchemy import or_
 from app import Usuario, fieldsFormatter, Perfil
 from app import AuthLoginSchema
@@ -17,7 +18,7 @@ from werkzeug.security import check_password_hash
 
 
 @app.route("/auth", methods=["POST"])
-@validate(body=AuthLoginSchema)
+@field_validator(AuthLoginSchema)
 def login():
     data = request.get_json()
 

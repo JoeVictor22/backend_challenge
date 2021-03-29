@@ -1,14 +1,17 @@
 from app import app, db, Messages
+from . import resource, paginate, field_validator
 from flask import request, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
-from sqlalchemy import exc
+from sqlalchemy import exc, or_
 from werkzeug.security import generate_password_hash
-from . import resource, paginate
-from app import Usuario
-
+from app import Usuario, Perfil
+from app import fieldsFormatter
 
 from flask_pydantic import validate
 from app import UsuarioAddSchema, UsuarioEditSchema
+from app import CadastroAddSchema
+
+
 
 @app.route("/usuario/all", methods=["GET"])
 @jwt_required
@@ -77,15 +80,23 @@ def usuarioView(usuario_id):
 @app.route("/usuario/add", methods=["POST"])
 @jwt_required
 @resource("usuario-add")
-@validate(body=UsuarioAddSchema)
+@field_validator(UsuarioAddSchema)
 def usuarioAdd():
     data = request.get_json()
 
-    email = data.get("email").lower()
+    # check if perfil is already fk of a user
+    if data.get("perfil_id"):
+        usuario_perfil = Usuario.query.filter(Usuario.perfil_id == data["perfil_id"]).first()
+        if usuario_perfil is not None:
+            return jsonify(
+                {"message": Messages.ALREADY_EXISTS.format("Perfil"), "error": True}
+            )
 
+    # check if is emails is already in use
+    email = data.get("email").lower()
     if Usuario.query.filter_by(email=email).first():
         return jsonify(
-            {"message": "O email informado já esta cadastrado", "error": True}
+            {"message": Messages.ALREADY_EXISTS.format("email"), "error": True}
         )
 
     hashed_pass = generate_password_hash(data.get('senha'), method="sha256")
@@ -113,17 +124,16 @@ def usuarioAdd():
             {"message": Messages.REGISTER_CREATE_INTEGRITY_ERROR, "error": True}
         )
 
-
 # --------------------------------------------------------------------------------------------------#
-
 
 @app.route("/usuario/edit/<usuario_id>", methods=["PUT"])
 @jwt_required
 @resource("usuario-edit")
-@validate(body=UsuarioEditSchema)
+@field_validator(UsuarioEditSchema)
 def usuarioEdit(usuario_id):
     data = request.get_json()
 
+    # get logged user
     current_user = get_jwt_identity()
     logged_user = Usuario.query.get(current_user)
 
@@ -133,21 +143,29 @@ def usuarioEdit(usuario_id):
     if logged_user.cargo_id == 2:
         usuario_id = logged_user.id
 
+    # get user to be edited
     usuario = Usuario.query.get(usuario_id)
-
     if not usuario:
         return jsonify(
             {"message": Messages.REGISTER_NOT_FOUND.format(usuario_id), "error": True}
         )
 
+    # check if perfil is already fk of a user
+    if data.get("perfil_id"):
+        usuario_perfil = Usuario.query.filter(Usuario.perfil_id == data["perfil_id"], Usuario.id != usuario_id).first()
+        if usuario_perfil is not None:
+            return jsonify(
+                {"message": Messages.ALREADY_EXISTS.format("Perfil"), "error": True}
+            )
+
+    # check if is emails is already in use
     email = data.get("email").lower()
     if Usuario.query.filter(Usuario.email == email, Usuario.id != usuario_id).first():
         return jsonify(
-            {"message": "O email informado já esta cadastrado", "error": True}
+            {"message": Messages.ALREADY_EXISTS.format("email"), "error": True}
         )
 
-
-    # if user is tring to edit itself, let it change password
+    # if user is trying to edit itself, let it change password
     if logged_user.id == usuario.id:
         # check should change password
         if data.get('senha') is not None:
@@ -209,3 +227,71 @@ def usuarioDelete(usuario_id):
         return jsonify(
             {"message": Messages.REGISTER_DELETE_INTEGRITY_ERROR, "error": True}
         )
+
+
+# --------------------------------------------------------------------------------------------------#
+
+@app.route("/usuario/cadastro", methods=["POST"])
+@field_validator(CadastroAddSchema)
+def cadastroAdd():
+    data = request.get_json()
+
+    # if there is already a user with email
+
+    if Usuario.query.filter_by(email=data.get("email").lower()).first():
+        return jsonify(
+            {"message": Messages.ALREADY_EXISTS.format("email"), "error": True}
+        )
+
+    # check if there is already a user with cpf/pis
+    cpf = fieldsFormatter.CpfFormatter().clean(data["cpf"])
+    pis = fieldsFormatter.PisFormatter().clean(data["pis"])
+    perfil = Perfil.query.filter(or_(Perfil.cpf == cpf, Perfil.pis == pis)).first()
+    if perfil is not None:
+        return jsonify(
+            {"message": Messages.ALREADY_EXISTS.format("CPF/PIS"), "error": True}
+        )
+
+    hashed_pass = generate_password_hash(data.get('senha'), method="sha256")
+    email = data.get("email").lower()
+
+    perfil = Perfil(
+        nome=data.get("nome"),
+        pis=fieldsFormatter.PisFormatter().clean(data.get("pis")),
+        cpf=fieldsFormatter.CpfFormatter().clean(data.get("cpf")),
+        cep=fieldsFormatter.CepFormatter().clean(data.get("cep")),
+        rua=data.get("rua"),
+        numero=data.get("numero"),
+        complemento=data.get("complemento"),
+        cidade_id=data.get("cidade_id"),
+    )
+
+    db.session.add(perfil)
+
+    try:
+        db.session.flush()
+
+        usuario = Usuario(
+            email=email,
+            senha=hashed_pass,
+            perfil_id=perfil.id,
+            cargo_id=2,
+        )
+
+        db.session.add(usuario)
+
+        db.session.commit()
+        return jsonify(
+            {
+                "message": Messages.REGISTER_SUCCESS_CREATED.format("Login"),
+                "error": False,
+            }
+        )
+    except exc.IntegrityError:
+        db.session.rollback()
+        return jsonify(
+            {"message": Messages.REGISTER_CREATE_INTEGRITY_ERROR, "error": True}
+        )
+
+
+# --------------------------------------------------------------------------------------------------#
