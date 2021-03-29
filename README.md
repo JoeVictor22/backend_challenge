@@ -9,7 +9,7 @@ Implementação de uma API para cadastro de usuários utilizando a framework Fla
 │   ├── .dev.env
 │   ├── .homolog.env
 │   ├── docker-compose.dev.yml
-│   ├── docker-compose.dev.yml
+│   ├── docker-compose.homolog.yml
 │   └── docker/
 │   │   ├── backend/
 │   │   │   └── Dockerfile
@@ -17,7 +17,7 @@ Implementação de uma API para cadastro de usuários utilizando a framework Fla
 │   │   │   └── Dockerfile
 ├── frontend_challnege/
 ```
-- Apartir da raiz, executar:
+- A partir da raiz, executar:
 > docker-compose -f docker-compose.yml -f backend_challenge/docker-compose.[AMBIENTE].yml up
 
 ### configuração do banco de dados
@@ -27,7 +27,7 @@ Implementação de uma API para cadastro de usuários utilizando a framework Fla
 > python run.py db upgrade</br>
 
 #### Popular com dados base
-Executar o seguinte comando ou inserir no banco de dados os arquivos cidade_uf.sql e rules.sql encontrados em /utils/scripts/db/.
+Executar o seguinte script ou inserir no banco de dados os arquivos cidade_uf.sql e rules.sql encontrados em /utils/scripts/db/.
 > python -m utils.scripts.insertData
 
 ### testes unitários
