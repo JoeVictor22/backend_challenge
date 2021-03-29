@@ -1,8 +1,7 @@
 from typing import Optional
 import re
 from pydantic import BaseModel, validator, constr
-from app import Usuario, Perfil
-from flask_jwt_extended import jwt_required, get_jwt_identity
+import ujson
 
 class UsuarioAddSchema(BaseModel):
 
@@ -11,6 +10,9 @@ class UsuarioAddSchema(BaseModel):
     cargo_id: int
 
     perfil_id: Optional[int]
+
+    class Config:
+        json_loads = ujson.loads
 
     @validator('email')
     def email_validator(cls, email):
@@ -29,6 +31,9 @@ class UsuarioEditSchema(BaseModel):
     cargo_id: int
 
     perfil_id: Optional[int]
+
+    class Config:
+        json_loads = ujson.loads
 
     @validator('email')
     def email_validator(cls, email):
