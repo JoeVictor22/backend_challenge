@@ -1,10 +1,10 @@
 def _(msg_id):
     translations = {
         'Value is not a valid float': 'O valor deve ser um ponto flutuante',
-        'ensure this value has at least {limit_value} characters': 'Este campo deve possuir pelo menos {limit_value} caractéres',
+        'ensure this value has at least {limit_value} characters': 'Este campo deve possuir pelo menos {limit_value} caracteres',
         'Value is missing': "Valor não informado",
         "Type error": "Valor de tipo incorreto",
-        'ensure this value has at most {limit_value} characters': 'Este campo deve possuir no máximo {limit_value} caractéres',
+        'ensure this value has at most {limit_value} characters': 'Este campo deve possuir no máximo {limit_value} caracteres',
     }
 
     try:

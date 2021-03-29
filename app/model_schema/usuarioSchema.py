@@ -1,7 +1,7 @@
 from typing import Optional
 import re
 from pydantic import BaseModel, validator, constr
-import ujson
+import json
 
 class UsuarioAddSchema(BaseModel):
 
@@ -12,7 +12,7 @@ class UsuarioAddSchema(BaseModel):
     perfil_id: Optional[int]
 
     class Config:
-        json_loads = ujson.loads
+        json_loads = json.loads
 
     @validator('email')
     def email_validator(cls, email):
@@ -33,7 +33,7 @@ class UsuarioEditSchema(BaseModel):
     perfil_id: Optional[int]
 
     class Config:
-        json_loads = ujson.loads
+        json_loads = json.loads
 
     @validator('email')
     def email_validator(cls, email):

@@ -1,7 +1,7 @@
 from typing import Optional
 from pydantic import BaseModel, validator, constr
 from validate_docbr import CPF, PIS
-import ujson
+import json
 
 class PerfilAddSchema(BaseModel):
     # mandatory field
@@ -16,7 +16,7 @@ class PerfilAddSchema(BaseModel):
     cidade_id: int
 
     class Config:
-        json_loads = ujson.loads
+        json_loads = json.loads
 
 
     @validator('cpf')

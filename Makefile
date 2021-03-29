@@ -22,13 +22,12 @@ migrate_db:
 start:
 	python run.py runserver
 
-test:export STAGE=test
+venv:
+	virtualenv venv
+	. $(shell pwd)/venv/bin/activate
+	pip install -r requirements.txt
 
-test:
-	rm -Rf migrations/
-	python run.py db init
-	python run.py db migrate
-	python run.py db upgrade
-
-test:
+test: export STAGE=test
+test: venv
 	PYTHONPATH=. pytest
+

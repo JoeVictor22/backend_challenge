@@ -1,5 +1,5 @@
 from pydantic import BaseModel, validator, constr
-import ujson
+import json
 
 
 class AuthLoginSchema(BaseModel):
@@ -8,6 +8,6 @@ class AuthLoginSchema(BaseModel):
     senha: constr(min_length=4, max_length=255)
 
     class Config:
-        json_loads = ujson.loads
+        json_loads = json.loads
 
 # --------------------------------------------------------------------------------------------------#
