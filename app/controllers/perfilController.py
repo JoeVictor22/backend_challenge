@@ -16,12 +16,12 @@ from app import PerfilAddSchema
 def perfilAll():
     page = request.args.get("page", 1, type=int)
     rows_per_page = request.args.get("rows_per_page", app.config["ROWS_PER_PAGE"], type=int)
-    cpf = request.args.get("email", None)
+    cpf = request.args.get("cpf", None)
 
     query = Perfil.query
 
     if cpf != None:
-        query = query.filter(Perfil.email.ilike("%%{}%%".format(fieldsFormatter.CpfFormatter().clean(cpf))))
+        query = query.filter(Perfil.cpf.ilike("%%{}%%".format(fieldsFormatter.CpfFormatter().clean(cpf))))
 
     perfis, output = paginate(query, page, rows_per_page)
 

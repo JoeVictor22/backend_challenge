@@ -40,6 +40,41 @@ paths:
             schema:
               $ref: '#/components/schemas/authRequest'
 
+  /perfil/all:
+    get:
+      summary: Listagem de perfis.
+      description: Retorna a lista de perfis cadastrados no sistema.
+      security:
+        - bearerAuth: [ ]
+      parameters:
+        - name: page
+          in: query
+          description: Página
+          required: false
+          schema:
+            type: integer
+        - name: cpf
+          in: query
+          description: CPF para filtro
+          required: false
+          schema:
+            type: string
+            format: string
+
+      responses:
+        '200':
+          description: Uma lista paginada de perfis
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/perfilAllResponse"
+        default:
+          description: erro
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+
   /usuario/cadastro:
     post:
       summary: Criação de usuário
@@ -204,6 +239,70 @@ components:
           type: string
           example: A
 
+    perfilAllResponse:
+      type: object
+      required:
+        - error
+        - itens
+      properties:
+        error:
+          type: boolean
+          example: False
+        itens:
+          type: array
+          items:
+            $ref: "#/components/schemas/perfil"
+    error:
+      type: object
+      required:
+        - error
+        - message
+      properties:
+        error:
+          type: boolean
+          example: True
+        message:
+          type: string
+
+    perfil:
+      type: object
+      required:
+        - id
+        - cep
+        - cpf
+        - nome
+        - pis
+        - numero
+        - rua
+        - cidade_id
+      properties:
+        id:
+          type: integer
+          example: 1
+        cep:
+          type: string
+          example: 60730-235
+        cidade_id:
+          type: integer
+          example: 3500
+        cpf:
+          type: string
+          example: 041.716.503-05
+        nome:
+          type: string
+          example: joel
+        pis:
+          type: string
+          example: 194.94124.29-7
+        rua:
+          type: string
+          example: R comendador garcia
+        numero:
+          type: string
+          example: 1414
+        complemento:
+          type: string
+          example: A
 
     genericSuccessResponse:
       type: object
