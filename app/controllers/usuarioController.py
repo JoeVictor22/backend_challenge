@@ -92,7 +92,7 @@ def usuarioAdd():
                 {"message": Messages.ALREADY_EXISTS.format("Perfil"), "error": True}
             )
 
-    # check if is emails is already in use
+    # check if email is already in use
     email = data.get("email").lower()
     if Usuario.query.filter_by(email=email).first():
         return jsonify(

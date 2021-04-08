@@ -59,7 +59,6 @@ paths:
           required: false
           schema:
             type: string
-            format: string
 
       responses:
         '200':
@@ -68,6 +67,40 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/perfilAllResponse"
+        default:
+          description: erro
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+
+  /usuario/all:
+    get:
+      summary: Listagem de usuários.
+      description: Retorna a lista de usuários cadastrados no sistema.
+      security:
+        - bearerAuth: [ ]
+      parameters:
+        - name: page
+          in: query
+          description: Página
+          required: false
+          schema:
+            type: integer
+        - name: email
+          in: query
+          description: Email para filtro
+          required: false
+          schema:
+            type: string
+
+      responses:
+        '200':
+          description: Uma lista paginada de usuários
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/usuarioAllResponse"
         default:
           description: erro
           content:
@@ -239,6 +272,40 @@ components:
           type: string
           example: A
 
+    usuarioAllResponse:
+      type: object
+      required:
+        - error
+        - itens
+      properties:
+        error:
+          type: boolean
+          example: False
+        itens:
+          type: array
+          items:
+            $ref: "#/components/schemas/usuario"
+
+    usuario:
+        type: object
+        required:
+          - id
+          - email
+          - cargo_id
+        properties:
+          id:
+            type: integer
+            example: 1
+          email:
+            type: string
+            example: joelvictor1746@gmail.com
+          cargo_id:
+            type: integer
+            example: 1
+          perfil_id:
+            type: integer
+            example: 1
+
     perfilAllResponse:
       type: object
       required:
@@ -252,6 +319,7 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/perfil"
+
     error:
       type: object
       required:
