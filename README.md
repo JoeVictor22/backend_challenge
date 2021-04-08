@@ -35,3 +35,9 @@ Executar o seguinte script ou inserir no banco de dados os arquivos cidade_uf.sq
 > DATABASE_TEST_URI=postgresql://postgres:root@localhost/web_app_test
 - Os testes podem ser realizados executando
 > make test
+
+### swagger
+- Configurar servidor HTTP com os arquivos necessários
+> make swagger
+- A Swagger UI pode ser acessada em:
+> localhost:8000
