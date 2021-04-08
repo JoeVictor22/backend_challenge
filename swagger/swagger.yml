@@ -15,23 +15,30 @@ paths:
       description: Realiza autenticação login/senha do usuário e retorna token de acesso e refresh.
       responses:
         '200':
-          description: JSON contendo o token de acesso, token de refresh e dados do usuario
+          description: Success
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/authRequest'
+                oneOf: [
+                  {
+                    $ref: '#/components/schemas/authResponse'
+                  },
+                  {
+                    $ref: '#/components/schemas/authResponseError'
+                  }
+                ]
         '400':
           description: Dados invalidos
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/authRequest'
-        requestBody:
-          description: Dados necessários para validação
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/authResponse'
+                $ref: '#/components/schemas/responseFieldErrors'
+      requestBody:
+        description: Dados necessários para validação
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/authRequest'
 
 
 
@@ -98,3 +105,59 @@ components:
         senha:
           type: string
           example: 1234
+
+    authResponseError:
+      type: object
+      required:
+        - error
+      properties:
+        error:
+          type: boolean
+          example: true
+        message:
+          type: string
+          example: "Ocorreram erros no preenchimento do formulário."
+        form:
+          type: array
+          items:
+            type: object
+            properties:
+              message:
+                type: string
+                example: "A senha informada não corresponde com a do usuário."
+
+    responseFieldErrors:
+      type: object
+      required:
+        - status_code
+        - validation_error
+      properties:
+        status_code:
+          type: integer
+          example: 400
+        validation_error:
+          type: object
+          properties:
+            body_params:
+              type: array
+              items:
+                type: object
+                properties:
+                  ctx:
+                    type: object
+                    properties:
+                      limit_value:
+                        type: integer
+                        example: 4
+                  loc:
+                    type: array
+                    items:
+                      type: string
+                      example: campo_com_erro
+                  msg:
+                    type: string
+                    example: "Este campo deve possuir pelo menos 4 caractéres."
+                  type:
+                    type: string
+                    example: "value_error.any_str.min_length"
+
