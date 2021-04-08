@@ -26,18 +26,7 @@ def perfilAll():
     perfis, output = paginate(query, page, rows_per_page)
 
     for perfil in perfis:
-        data = {}
-        data["id"] = perfil.id
-        data["nome"] = perfil.nome
-        data["pis"] = fieldsFormatter.PisFormatter().format(perfil.pis)
-        data["cpf"] = fieldsFormatter.CpfFormatter().format(perfil.cpf)
-        data["cep"] = fieldsFormatter.CepFormatter().format(perfil.cep)
-        data["rua"] = perfil.rua
-        data["numero"] = perfil.numero
-        data["complemento"] = perfil.complemento
-        data["cidade_id"] = perfil.cidade_id
-
-
+        data = perfil.to_dict()
         output["itens"].append(data)
 
     return jsonify(output)
@@ -54,9 +43,10 @@ def perfilView(perfil_id: int):
     current_user = get_jwt_identity()
     user = Usuario.query.get(current_user)
 
-    # guarantee that user can only view itself
     if user is None:
         return jsonify({"message": Messages.REGISTER_NOT_FOUND.format(current_user), "error": True})
+
+    # guarantee that user can only view itself
     if user.cargo_id == 2:
         perfil_id = user.perfil_id
 
@@ -67,16 +57,8 @@ def perfilView(perfil_id: int):
             {"message": Messages.REGISTER_NOT_FOUND.format(perfil_id), "error": True}
         )
 
-    data = {"error": False}
-    data["id"] = perfil.id
-    data["nome"] = perfil.nome
-    data["pis"] = fieldsFormatter.PisFormatter().format(perfil.pis)
-    data["cpf"] = fieldsFormatter.CpfFormatter().format(perfil.cpf)
-    data["cep"] = fieldsFormatter.CepFormatter().format(perfil.cep)
-    data["rua"] = perfil.rua
-    data["numero"] = perfil.numero
-    data["complemento"] = perfil.complemento
-    data["cidade_id"] = perfil.cidade_id
+    data = perfil.to_dict()
+    data['error'] = False
 
     return jsonify(data)
 

@@ -30,7 +30,7 @@ def usuarioAll():
     usuarios, output = paginate(query, page, rows_per_page)
 
     for usuario in usuarios:
-        data = usuario.to_json()
+        data = usuario.to_dict()
         output["itens"].append(data)
 
     return jsonify(output)
@@ -60,7 +60,7 @@ def usuarioView(usuario_id: int):
             {"message": Messages.REGISTER_NOT_FOUND.format(usuario_id), "error": True}
         )
 
-    data = usuario.to_json()
+    data = usuario.to_dict()
     data["error"] = False
 
     return jsonify(data)

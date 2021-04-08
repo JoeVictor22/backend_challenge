@@ -23,7 +23,7 @@ class Usuario(db.Model):
 
     # --------------------------------------------------------------------------------------------------#
 
-    def to_json(self):
+    def to_dict(self):
         data = {
             "id": self.id,
             "email": self.email,

@@ -1,4 +1,4 @@
-from app import db
+from app import db, fieldsFormatter
 
 class Perfil(db.Model):
     __tablename__ = "perfil"
@@ -25,6 +25,22 @@ class Perfil(db.Model):
         self.numero = numero
         self.complemento = complemento
         self.cidade_id = cidade_id
+
+    # --------------------------------------------------------------------------------------------------#
+
+    def to_dict(self):
+        data = {
+            "id": self.id,
+            "nome": self.nome,
+            "pis": fieldsFormatter.PisFormatter().format(self.pis),
+            "cpf": fieldsFormatter.CpfFormatter().format(self.cpf),
+            "cep": fieldsFormatter.CepFormatter().format(self.cep),
+            "rua": self.rua,
+            "numero": self.numero,
+            "complemento": self.complemento,
+            "cidade_id": self.cidade_id
+            }
+        return data
 
     # --------------------------------------------------------------------------------------------------#
 
