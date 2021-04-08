@@ -1,5 +1,5 @@
 class CpfFormatter:
-    def clean(self, cpf):
+    def clean(self, cpf: str):
         cpf = str(cpf)
         if not cpf.isdigit():
             cpf = cpf.replace(".", "")
@@ -7,7 +7,7 @@ class CpfFormatter:
 
         return cpf
 
-    def format(self, cpf):
+    def format(self, cpf: str):
 
         if cpf == "":
             return ""
@@ -16,14 +16,14 @@ class CpfFormatter:
 
 class CepFormatter:
 
-    def clean(self, cep):
+    def clean(self, cep: str):
 
         if not cep.isdigit():
             cep = cep.replace("-", "")
 
         return cep
 
-    def format(self, cep):
+    def format(self, cep: str):
 
         if cep == "":
             return ""
@@ -32,7 +32,7 @@ class CepFormatter:
 
 class PhoneFormatter:
 
-    def clean(self, phone):
+    def clean(self, phone: str):
 
         if not phone.isdigit():
             phone = phone.replace("-", "")
@@ -42,7 +42,7 @@ class PhoneFormatter:
 
         return phone
 
-    def format(self, phone):
+    def format(self, phone: str):
 
         if phone == "":
             return ""
@@ -52,14 +52,14 @@ class PhoneFormatter:
 
 class PisFormatter:
 
-    def clean(self, pis):
+    def clean(self, pis: str):
         pis = str(pis)
         if not pis.isdigit():
             pis = pis.replace("-", "")
             pis = pis.replace(".", "")
         return pis
 
-    def format(self, pis):
+    def format(self, pis: str):
 
         if pis == "":
             return ""

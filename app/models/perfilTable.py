@@ -16,7 +16,7 @@ class Perfil(db.Model):
 
     # --------------------------------------------------------------------------------------------------#
 
-    def __init__(self, nome, pis, cpf, cep, rua, numero, complemento, cidade_id):
+    def __init__(self, nome: str, pis: str, cpf: str, cep: str, rua: str, numero: str, complemento: str, cidade_id: int):
         self.nome = nome
         self.pis = pis
         self.cpf = cpf

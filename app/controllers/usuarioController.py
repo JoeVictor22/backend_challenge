@@ -30,13 +30,7 @@ def usuarioAll():
     usuarios, output = paginate(query, page, rows_per_page)
 
     for usuario in usuarios:
-        data = {}
-        data["id"] = usuario.id
-        data["email"] = usuario.email
-        data["perfil_id"] = usuario.perfil_id
-
-        data["cargo_id"] = usuario.cargo_id
-
+        data = usuario.to_json()
         output["itens"].append(data)
 
     return jsonify(output)
@@ -45,10 +39,10 @@ def usuarioAll():
 # --------------------------------------------------------------------------------------------------#
 
 
-@app.route("/usuario/view/<usuario_id>", methods=["GET"])
+@app.route("/usuario/view/<int:usuario_id>", methods=["GET"])
 @jwt_required
 @resource("usuario-view")
-def usuarioView(usuario_id):
+def usuarioView(usuario_id: int):
 
     current_user = get_jwt_identity()
     user = Usuario.query.get(current_user)
@@ -66,12 +60,8 @@ def usuarioView(usuario_id):
             {"message": Messages.REGISTER_NOT_FOUND.format(usuario_id), "error": True}
         )
 
-    data = {"error": False}
-    data["id"] = usuario.id
-    data["email"] = usuario.email
-    data["perfil_id"] = usuario.perfil_id
-
-    data["cargo_id"] = usuario.cargo_id
+    data = usuario.to_json()
+    data["error"] = False
 
     return jsonify(data)
 
@@ -126,11 +116,11 @@ def usuarioAdd():
 
 # --------------------------------------------------------------------------------------------------#
 
-@app.route("/usuario/edit/<usuario_id>", methods=["PUT"])
+@app.route("/usuario/edit/<int:usuario_id>", methods=["PUT"])
 @jwt_required
 @resource("usuario-edit")
 @field_validator(UsuarioEditSchema)
-def usuarioEdit(usuario_id):
+def usuarioEdit(usuario_id: int):
     data = request.get_json()
 
     # get logged user
@@ -193,10 +183,10 @@ def usuarioEdit(usuario_id):
 # --------------------------------------------------------------------------------------------------#
 
 
-@app.route("/usuario/delete/<usuario_id>", methods=["DELETE"])
+@app.route("/usuario/delete/<int:usuario_id>", methods=["DELETE"])
 @jwt_required
 @resource("usuario-delete")
-def usuarioDelete(usuario_id):
+def usuarioDelete(usuario_id: int):
 
     usuario = Usuario.query.get(usuario_id)
 

@@ -12,11 +12,12 @@ class Estado(db.Model):
 
 	#--------------------------------------------------------------------------------------------------#
 	
-	def __init__(self, nome, sigla):
+	def __init__(self, nome: str, sigla: str, pais_id: int):
 		self.nome = nome
 		self.sigla = sigla
+		self.pais_id = pais_id
 
 	#--------------------------------------------------------------------------------------------------#
 		
 	def __repr__(self):
-		return "<Estado %r %r %r>" %(self.id, self.nome, self.sigla)
+		return "<Estado %r %r %r %r>" %(self.id, self.nome, self.sigla, self.pais_id)

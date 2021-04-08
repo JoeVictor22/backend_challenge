@@ -15,12 +15,22 @@ class Usuario(db.Model):
 
     # --------------------------------------------------------------------------------------------------#
 
-    def __init__(self, email, senha, perfil_id, cargo_id):
+    def __init__(self, email: str, senha: str, perfil_id: int, cargo_id: int):
         self.email = email
         self.senha = senha
         self.perfil_id = perfil_id
         self.cargo_id = cargo_id
 
+    # --------------------------------------------------------------------------------------------------#
+
+    def to_json(self):
+        data = {
+            "id": self.id,
+            "email": self.email,
+            "perfil_id": self.perfil_id,
+            "cargo_id": self.cargo_id
+        }
+        return data
     # --------------------------------------------------------------------------------------------------#
 
     def __repr__(self):

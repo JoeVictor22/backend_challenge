@@ -32,10 +32,10 @@ def cargoAll():
 # --------------------------------------------------------------------------------------------------#
 
 
-@app.route("/cargo/view/<cargo_id>", methods=["GET"])
+@app.route("/cargo/view/<int:cargo_id>", methods=["GET"])
 @jwt_required
 @resource("cargo-view")
-def cargoView(cargo_id):
+def cargoView(cargo_id: int):
     cargo = Cargo.query.get(cargo_id)
 
     if not cargo:

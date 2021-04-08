@@ -46,10 +46,10 @@ def perfilAll():
 # --------------------------------------------------------------------------------------------------#
 
 
-@app.route("/perfil/view/<perfil_id>", methods=["GET"])
+@app.route("/perfil/view/<int:perfil_id>", methods=["GET"])
 @jwt_required
 @resource("perfil-view")
-def perfilView(perfil_id):
+def perfilView(perfil_id: int):
 
     current_user = get_jwt_identity()
     user = Usuario.query.get(current_user)
@@ -131,11 +131,11 @@ def perfilAdd():
 # --------------------------------------------------------------------------------------------------#
 
 
-@app.route("/perfil/edit/<perfil_id>", methods=["PUT"])
+@app.route("/perfil/edit/<int:perfil_id>", methods=["PUT"])
 @jwt_required
 @resource("perfil-edit")
 @field_validator(PerfilAddSchema)
-def perfilEdit(perfil_id):
+def perfilEdit(perfil_id: int):
     data = request.get_json()
 
     current_user = get_jwt_identity()
@@ -191,10 +191,10 @@ def perfilEdit(perfil_id):
 # --------------------------------------------------------------------------------------------------#
 
 
-@app.route("/perfil/delete/<perfil_id>", methods=["DELETE"])
+@app.route("/perfil/delete/<int:perfil_id>", methods=["DELETE"])
 @jwt_required
 @resource("perfil-delete")
-def perfilDelete(perfil_id):
+def perfilDelete(perfil_id: int):
     perfil = Perfil.query.get(perfil_id)
 
     if not perfil:

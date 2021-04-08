@@ -8,12 +8,13 @@ from app import Cargo
 from app import Controller
 from app import Regra
 
+from flask_sqlalchemy import BaseQuery
 from pydantic import BaseModel, ValidationError, FilePath
 
 from app import error_messages
 
 # access control
-def resource(resource_name):
+def resource(resource_name: str):
     def wrapper(f):
         @wraps(f)
         def wrapped(*args, **kwargs):
@@ -77,7 +78,7 @@ def resource(resource_name):
 # --------------------------------------------------------------------------------------------------#
 
 # pydantic validator
-def field_validator(validator):
+def field_validator(validator: BaseModel):
     def wrapper(f):
         @wraps(f)
         def wrapped(*args, **kwargs):
@@ -116,7 +117,7 @@ def field_validator(validator):
 # --------------------------------------------------------------------------------------------------#
 
 # item pagination
-def paginate(query, page=1, rows_per_page=1):
+def paginate(query: BaseQuery, page: int=1, rows_per_page: int=1):
 
     pagination = query.paginate(page=page, per_page=rows_per_page, error_out=False)
 

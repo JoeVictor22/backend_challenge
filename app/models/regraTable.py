@@ -15,7 +15,7 @@ class Regra(db.Model):
 
     # --------------------------------------------------------------------------------------------------#
 
-    def __init__(self, acao, cargo_id, controller_id, permitir):
+    def __init__(self, acao: str, cargo_id: int, controller_id: int, permitir: bool):
         self.acao = acao
         self.cargo_id = cargo_id
         self.controller_id = controller_id

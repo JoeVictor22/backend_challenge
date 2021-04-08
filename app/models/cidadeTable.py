@@ -11,7 +11,7 @@ class Cidade(db.Model):
 
 	#--------------------------------------------------------------------------------------------------#
 
-	def __init__(self, nome, ibge, estado_id):
+	def __init__(self, nome: str, ibge: str, estado_id: int):
 		self.nome = nome
 		self.ibge = ibge
 		self.estado_id = estado_id

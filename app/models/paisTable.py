@@ -11,7 +11,7 @@ class Pais(db.Model):
 
     # --------------------------------------------------------------------------------------------------#
 
-    def __init__(self, nome, iso):
+    def __init__(self, nome: str, iso: str):
         self.nome = nome
         self.iso = iso
 

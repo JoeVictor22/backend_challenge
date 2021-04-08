@@ -34,10 +34,10 @@ def cidadeAll():
 # --------------------------------------------------------------------------------------------------#
 
 
-@app.route("/cidade/view/<cidade_id>", methods=["GET"])
+@app.route("/cidade/view/<int:cidade_id>", methods=["GET"])
 #@jwt_required
 #@resource("cidade-view")
-def cidadeView(cidade_id):
+def cidadeView(cidade_id: int):
 
     cidade = Cidade.query.get(cidade_id)
 
