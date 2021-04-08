@@ -28,11 +28,11 @@ paths:
                   }
                 ]
         '400':
-          description: Dados invalidos
+          description: Dados inválidos
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/responseFieldErrors'
+                $ref: '#/components/schemas/genericResponseFieldErrors'
       requestBody:
         description: Dados necessários para validação
         content:
@@ -40,9 +40,43 @@ paths:
             schema:
               $ref: '#/components/schemas/authRequest'
 
-
+  /usuario/cadastro:
+    post:
+      summary: Criação de usuário
+      description: Cria um usuário de acesso
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                oneOf: [
+                  {
+                    $ref: '#/components/schemas/genericSuccessResponse'
+                  },
+                  {
+                    $ref: '#/components/schemas/genericResponseError'
+                  }
+                ]
+        '400':
+          description: Dados inválidos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/genericResponseFieldErrors'
+      requestBody:
+        description: Dados necessários para a criação de um usuário
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/cadastroRequest'
 
 components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
   schemas:
     authResponse:
       type: object
@@ -116,7 +150,7 @@ components:
           example: true
         message:
           type: string
-          example: "Ocorreram erros no preenchimento do formulário."
+          example: "Não foi possível criar o cadastro. Verifique os dados e tente novamente."
         form:
           type: array
           items:
@@ -126,12 +160,92 @@ components:
                 type: string
                 example: "A senha informada não corresponde com a do usuário."
 
-    responseFieldErrors:
+    cadastroRequest:
+      type: object
+      required:
+        - email
+        - senha
+        - cep
+        - cpf
+        - nome
+        - pis
+        - numero
+        - rua
+        - cidade_id
+      properties:
+        email:
+          type: string
+          example: joelvictor1746@gmail.com
+        senha:
+          type: string
+          example: 123456
+        cep:
+          type: string
+          example: 60730-235
+        cidade_id:
+          type: integer
+          example: 3500
+        cpf:
+          type: string
+          example: 041.716.503-05
+        nome:
+          type: string
+          example: joel
+        pis:
+          type: string
+          example: 194.94124.29-7
+        rua:
+          type: string
+          example: R comendador garcia
+        numero:
+          type: string
+          example: 1414
+        complemento:
+          type: string
+          example: A
+
+
+    genericSuccessResponse:
+      type: object
+      required:
+        - error
+      properties:
+        error:
+          type: boolean
+          example: false
+        message:
+          type: string
+          example: "Cadastro criado com sucesso."
+
+    genericResponseError:
+      type: object
+      required:
+        - error
+      properties:
+        error:
+          type: boolean
+          example: true
+        message:
+          type: string
+          example: "Não foi possível criar o cadastro. Verifique os dados e tente novamente."
+        form:
+          type: array
+          items:
+            type: object
+            properties:
+              message:
+                type: string
+                example: "A senha informada não corresponde com a do usuário."
+
+    genericResponseFieldErrors:
       type: object
       required:
         - status_code
         - validation_error
       properties:
+        message:
+          type: string
+          example: "Ocorreram errors durante a validação de alguns dados, verifique o formulário e tente novamente."
         status_code:
           type: integer
           example: 400
@@ -148,7 +262,7 @@ components:
                     properties:
                       limit_value:
                         type: integer
-                        example: 4
+                        example: 6
                   loc:
                     type: array
                     items:
@@ -156,7 +270,7 @@ components:
                       example: campo_com_erro
                   msg:
                     type: string
-                    example: "Este campo deve possuir pelo menos 4 caractéres."
+                    example: "Este campo deve possuir pelo menos 6 caractéres."
                   type:
                     type: string
                     example: "value_error.any_str.min_length"

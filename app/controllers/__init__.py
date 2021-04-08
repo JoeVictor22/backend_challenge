@@ -106,7 +106,7 @@ def field_validator(validator):
                             "status_code": 400,
                         }
                     ),
-                    401,
+                    400,
                 )
 
             return f(*args, **kwargs)
