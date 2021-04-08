@@ -1,4 +1,4 @@
-.PHONY: install test
+.PHONY: install test swagger
 
 default: start
 
@@ -31,3 +31,5 @@ test: export STAGE=test
 test: venv
 	PYTHONPATH=. pytest
 
+swagger:
+	python swagger_server.py

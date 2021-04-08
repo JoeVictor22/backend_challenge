@@ -1,0 +1,100 @@
+openapi: 3.0.0
+info:
+  title: Backend-challenge
+  description: API description.
+  version: 0.1
+servers:
+  - url: http://localhost:5000
+    description: Local deployment
+  - url: https://back-pontotel.herokuapp.com/
+    description: Homolog server
+paths:
+  /auth:
+    post:
+      summary: Autenticação.
+      description: Realiza autenticação login/senha do usuário e retorna token de acesso e refresh.
+      responses:
+        '200':
+          description: JSON contendo o token de acesso, token de refresh e dados do usuario
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/authRequest'
+        '400':
+          description: Dados invalidos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/authRequest'
+        requestBody:
+          description: Dados necessários para validação
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/authResponse'
+
+
+
+components:
+  schemas:
+    authResponse:
+      type: object
+      required:
+        - access_token
+        - refresh_token
+        - cargo
+        - cargo_id
+        - email
+      properties:
+        access_token:
+          type: string
+          example: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2MTc4NzU0ODYsIm5iZiI6MTYxNzg3NTQ4NiwianRpIjoiZDhlYjkxYWQtNWY2NS00OTdiLTgzOGMtNjg2NmUyZDhhZDk5IiwiZXhwIjoxNjE3ODc2Mzg2LCJpZGVudGl0eSI6MSwiZnJlc2giOmZhbHNlLCJ0eXBlIjoiYWNjZXNzIn0.lHqK0_Sd4032E_1f9XhD17BhAa7KgvOfoaaP9uYJbpk
+        refresh_token:
+          type: string
+          example: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2MTc4NzU0ODYsIm5iZiI6MTYxNzg3NTQ4NiwianRpIjoiMTU2ODVlN2YtMjA4Yy00ZWU3LTgwY2QtOGRjZTdkYzliYWNkIiwiZXhwIjoxNjIwNDY3NDg2LCJpZGVudGl0eSI6MSwidHlwZSI6InJlZnJlc2gifQ.vpx-6uUCNuNmqP1YO200dBf4GXJM37YEyORMAgYqG24
+        cargo_id:
+          type: integer
+          example: 1
+        email:
+          type: string
+          example: joelvictor1746@gmail.com
+        perfil_id:
+          type: integer
+          example: 1
+        perfil:
+          type: object
+          properties:
+            id:
+              type: integer
+              example: 1
+            nome:
+              type: string
+              example: Joel
+            cpf:
+              type: string
+              example: 04171650305
+            pis:
+              type: string
+              example: 19494124297
+        cargo:
+          type: object
+          properties:
+            id:
+              type: integer
+              example: 1
+            name:
+              type: string
+              example: administrador
+
+    authRequest:
+      type: object
+      required:
+        - email
+        - senha
+      properties:
+        email:
+          type: string
+          example: joelvictor1746@gmail.com
+        senha:
+          type: string
+          example: 1234
